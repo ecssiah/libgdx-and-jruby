@@ -46,6 +46,11 @@ This should display a black window that is 800x600 if we add the 'src/util/Initi
     java_import com.badlogic.gdx.Gdx
     java_import com.badlogic.gdx.Game
     
-The project should now run.
+The project should now run. The second line is just a way of loading all of the jars out of the /libs folder in one swipe.
+
+Seting Up A Camera and Tiled Map
+--------------------------------
+
+
 
 
