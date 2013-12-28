@@ -1,4 +1,4 @@
 LibGDX-and-Ruby
 ===============
 
-General reference for working in libGDX using JRuby.
+A general reference for working in libGDX using JRuby.
