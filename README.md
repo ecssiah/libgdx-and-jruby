@@ -242,7 +242,54 @@ You should now have a simple rendered map and associated camera with libGdx and 
 Collision With The Tile Map
 ---------------------------
 
-Before we can put a box2d player on the screen we have to make parts of the map solid. First, update your Initializer script with all of the new imports so that is out of the way. You can get the full list out of the repository.
+Before we can put a box2d player on the screen we have to make parts of the map solid. First, update your Initializer script with all of the new imports so that is out of the way. You can get the full list out of the repository. **Order can be important.** Make sure a class is available to be inherited or implemented when it is needed. That's already thought through in the repository Initializer.
+
+In GameScreen's show method add a quick reference to the number of map layers since it is used during rendering and there is no reason to keep looking it up. 
+
+    @numLayers = @map.getLayers.getCount
+    
+Also initialize a Box2DDebugRenderer so that we can see all the little boxes we're going to make.
+
+GameScreen.rb 26:
+
+    @debugRenderer = Box2DDebugRenderer.new
+    
+    @world = World.new(Vector2.new(0, C::GRAVITY), true)
+    
+    @player = Player.new(@atlas)
+    @player.pos = Vector2.new(26, 15)
+    @player.setupBody(@world, C::PLAYER, C::TILE)
+    
+    @contactListener = PlayerContactListener.new(@player)
+    @playerListener = PlayerListener.new(@player)
+    @world.setContactListener(@contactListener)
+    
+    setupTileBodies("mid", C::TILE, C::PLAYER)
+    
+    Gdx.input.setInputProcessor(@playerListener)
+    
+  end
+  
+The end of the show method lays the foundation for the box2d world and the player. Some constants need to be added to C.rb. C::PLAYER and C::TILE are hexadecimal constants that can be used for collision masking.
+
+The update and render method are basic libgdx. Make sure to add the debugRenderer.render call.
+
+The renderLayers showcases a nice Ruby feature.
+
+    for i in 0...@numLayers
+    
+Notice the slight difference. Normally in Java you'd need a (@numLayers - 1), but with Ruby ranges '..' means "up to and including" while '...' means just "up to". So by adding the third period into the range specification you avoid tagging on - 1 to a lot of things. For some reason, I feel like it would have made more sense if they were flipped, but it is still a nice feature.
+
+Other than that, the only tricky part may be how the tint is used. Instead of trying to set different brightnesses for each layer I just use an exponential decay function. The function kind of looks like a roller coaster drop and makes a nice natural fall off of brightness. Since the layers are rendered in reverse order I use (@numLayers + 1 - i) to have the tint start dark and become full when it is at the final layer. Notice the + 1 because you want the brightness to be full when on the last layer which is @numLayers - 1. That gives you Math.exp(0) which is 1. The maximum value for the exponential function with coefficent 1.
+
+Also,
+
+    if @map.getLayers.get(i).name == "mid"
+    
+just makes sure that the player is rendered right after the "mid" layer is rendered and at the same tint. The player is meant to be standing on the "mid" layer. That is the layer that will have solid blocks.
+
+The next method is setupTileBodies where the solid tiles are given box2d bodies for collision.
+
 
 
 Getting A Player On Screen
