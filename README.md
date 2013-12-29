@@ -1,6 +1,3 @@
-LibGDX and Ruby
-===============
-
 Part 1
 ======
 
