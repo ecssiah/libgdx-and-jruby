@@ -38,14 +38,14 @@ security1/idleLeft1
   orig: 64, 128
   offset: 0, 0
   index: -1
-security1/walkLeft5
+security1/walkLeft1
   rotate: false
   xy: 134, 2
   size: 64, 128
   orig: 64, 128
   offset: 0, 0
   index: -1
-security1/walkLeft1
+security1/walkLeft5
   rotate: false
   xy: 134, 2
   size: 64, 128
