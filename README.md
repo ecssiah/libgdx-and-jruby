@@ -41,7 +41,7 @@ We need a simple Ruby script to test the setup. Add TestGame.rb to '/src'.
 
     LwjglApplication.new(TestGame.new, "Test Game", 800, 600, true)
     
-That's pretty much it. This should display a black window if we add the Initializer.rb script to 'src/util'. This is just a convenience to avoid having imports clutter up all of your scripts. For now, this is all that is needed.
+That's pretty much it. The boolean argument tells libGdx to use OpenGL 2.0. You'll need this or you'll have to put false and change the import. This should display a black window if we add the Initializer.rb script to 'src/util'. This is just a convenience to avoid having imports clutter up all of your scripts. For now, this is all that is needed.
 
     require 'java'
     
@@ -49,6 +49,7 @@ That's pretty much it. This should display a black window if we add the Initiali
     
     java_import com.badlogic.gdx.Gdx
     java_import com.badlogic.gdx.Game
+    java_import com.badlogic.gdx.graphics.GL20
     
 The project should now run. The second line is just a way of loading all of the jars out of the '/libs' folder in one swipe. Iterations in Ruby are done using the .each method of an object. JRuby allows you to call .each on native Java collections as well. The first line allows direct access to all of the builtin Java classes. Of course, you will need to have installed [JRuby](https://github.com/jruby/jruby/wiki/GettingStarted).
 
