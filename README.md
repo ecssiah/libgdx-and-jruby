@@ -4,7 +4,13 @@ LibGDX and JRuby
 Setup
 -----
 
-The Eclipse [DLTK plugin](http://www.eclipse.org/dltk/) does a decent job with JRuby. You'll be giving up some of the content-assist you had with Java in Eclipse (For instance, you don't have the shortcut to automatically require the right imports), but Ruby comes with advantages of its own and with DLTK you still get some things like auto-complete.
+The Eclipse [DLTK plugin](http://www.eclipse.org/dltk/) does a decent job with JRuby. You'll be giving up some of the content-assist you had with Java in Eclipse (For instance, you don't have the shortcut to automatically require the right imports), but Ruby comes with advantages of its own. One of my favorite is the way it deals with getters and setters.
+
+    attr_writer :instance_var    #Setter
+    attr_reader :instance_var    #Getter
+    attr_accessor :instance_var  #Setter & Getter
+
+Also, with DLTK you still get some things like auto-complete.
 
 Since this is for the desktop the project setup is very easy. First, I create a project directory containing three subdirectories.
 
