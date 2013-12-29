@@ -8,10 +8,10 @@ The Eclipse [DLTK plugin](http://www.eclipse.org/dltk/) does a decent job with J
 
 Since this is for the desktop the project setup is very easy. First, I create a project directory containing three subdirectories.
 
-    /Test-Game
-    /Test-Game/assets
-    /Test-Game/libs
-    /Test-Game/src
+    /TestGame
+    /TestGame/assets
+    /TestGame/libs
+    /TestGame/src
 
 Put the main gdx files for your OS in the '/libs' folder. I would also grab gdx-tools out of '/extensions' in the [libGdx archive](http://libgdx.badlogicgames.com/nightlies/) so you can automatically pack your textures. On linux, mine looks like this.
 
