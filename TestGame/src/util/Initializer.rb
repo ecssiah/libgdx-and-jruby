@@ -2,13 +2,6 @@ require 'java'
 
 Dir["libs/\*.jar"].each { |jar| require jar }
 
-java_import 'aurelienribon.tweenengine.BaseTween'
-java_import 'aurelienribon.tweenengine.Timeline'
-java_import 'aurelienribon.tweenengine.Tween'
-java_import 'aurelienribon.tweenengine.TweenCallback'
-java_import 'aurelienribon.tweenengine.TweenManager'
-java_import 'aurelienribon.tweenengine.TweenAccessor'
-
 java_import com.badlogic.gdx.backends.lwjgl.LwjglApplication
 
 java_import com.badlogic.gdx.Gdx
