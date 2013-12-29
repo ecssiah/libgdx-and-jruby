@@ -21,7 +21,7 @@ Put the main gdx files for your OS in the '/libs' folder. I would also grab gdx-
     /libs/gdx-natives.jar
     /libs/gdx-tools.jar
 
-We need a simple Ruby script to test the setup. Add one called '/Test-Game/src/TestGame.rb'.
+We need a simple Ruby script to test the setup. Add one called '/TestGame/src/TestGame.rb'.
 
     require 'src/util/Initializer'
 
