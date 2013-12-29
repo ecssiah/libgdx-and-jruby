@@ -4,22 +4,22 @@ LibGDX and JRuby
 Setup
 -----
 
-The Eclipse [DLTK plugin](http://www.eclipse.org/dltk/) does a decent job with JRuby. You'll be giving up some of the content-assist you had with Java in Eclipse (For instance, you don't have the shortcut to automatically require the right imports), but Ruby comes with advantages of its own. One of my favorite is the way it deals with getters and setters.
+The Eclipse [DLTK plugin](http://www.eclipse.org/dltk/) does a decent job with JRuby. You'll be giving up some of the content-assist you had with Java in Eclipse (For instance, you don't have the shortcut to automatically require the right imports), but Ruby comes with advantages of its own. One of my favorites is the way it deals with getters and setters.
 
-    attr_writer :instance        #Setter for @instance
-    attr_reader :instance        #Getter for @instance
+    attr_writer :instance        #Setter
+    attr_reader :instance        #Getter
     attr_accessor :instance      #Setter & Getter
 
 Also, with DLTK you still get some things like auto-complete.
 
-Since this is for the desktop the project setup is very easy. First, I create a project directory containing three subdirectories.
+Since this is for the desktop the project setup is very easy. I create a project directory containing three subdirectories.
 
     /TestGame
     /TestGame/assets
     /TestGame/libs
     /TestGame/src
 
-Put the main gdx files for your OS in the '/libs' folder. I would also grab gdx-tools out of '/extensions' in the [libGdx archive](http://libgdx.badlogicgames.com/nightlies/) so you can automatically pack your textures. On linux, mine looks like this.
+Put the main gdx files for your OS in the '/libs' folder. I would also grab gdx-tools.jar out of '/extensions' in the [libGdx archive](http://libgdx.badlogicgames.com/nightlies/) so you can automatically pack your textures. On linux, mine looks like this.
 
     /libs/gdx.jar
     /libs/gdx-backend-lwjgl.jar
