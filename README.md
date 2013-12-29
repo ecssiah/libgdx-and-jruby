@@ -7,8 +7,8 @@ What you need:
 * Eclipse
 * DLTK Plugin
 * JRuby
+* Assets from this repository
 * A decent understanding of libGdx
-
 
 Setup
 -----
