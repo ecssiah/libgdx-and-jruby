@@ -104,7 +104,7 @@ is equivalent to
 
     def onEvent type, source
     
-In Ruby, they say you should use on_event instead of onEvent, but I don't like all the extra underscores you end up typing.
+In Ruby, they say you should use on_event instead of onEvent, but I don't like all the extra underscores you end up typing and the java methods you'll be using are CamelCase so it just seems smoother to ignore this rule in this case.
 
         ...
             
