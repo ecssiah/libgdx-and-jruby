@@ -125,7 +125,7 @@ When you need to refer to an object within another namespace you use the :: oper
 
     java_import com.badlogic.gdx.Input::Keys
 
-You can also access a java class directly. I used this in the case of the libGdx Array class, because otherwise it will bark at you about trying to redefine the Array that is included from Java.
+You can access a java class directly. I used this in the case of the libGdx Array class, because otherwise it will bark at you about trying to redefine the Array that is included from Java.
 
     frameTiles = Java::ComBadLogicUtils::Array.new
 
