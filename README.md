@@ -10,7 +10,7 @@ Files:
 Setup
 -----
 
-The Eclipse [DLTK plugin](http://www.eclipse.org/dltk/) does a decent job with JRuby. Just search for it in the marketplace. You'll be giving up some of the content-assist you had with Java (you don't have the shortcut to automatically add the right imports or quickfix), but Ruby comes with advantages of its own. Also, with the DLTK you still get basic things like auto-complete on your own objects and the builtin java classes. I have tried to get auto-complete for libgdx methods, but I don't think the plugin supports linking source to a Ruby project yet.
+The Eclipse [DLTK plugin](http://www.eclipse.org/dltk/) does a decent job with JRuby. Just search for it in the marketplace. You'll be giving up some of the content-assist you had with Java (there is no shortcut to automatically add the right imports or quickfix), but Ruby comes with advantages of its own. Also, with the DLTK you still get basic things like auto-complete on your own objects and the builtin java classes. I have tried to get auto-complete for libgdx methods, but I don't think the plugin supports linking source to a Ruby project yet.
 
 Since this is for the desktop, the project setup is very easy. I create a project directory like this.
 
