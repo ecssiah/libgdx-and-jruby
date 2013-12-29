@@ -298,7 +298,7 @@ This is another inline if statement that will jump to the next iteration if the 
 Getting A Player Setup
 ----------------------
 
-Now, I'll stop going through every line of code and just point out the key ideas. The full source is in the TestGame folder in this repository. You should be able to import it directly into Eclipse as a project if you're on Linux. Add the Player.rb, PlayerListener.rb, and PlayerContactListener.rb scripts.
+There are three scripts involved in getting the player up and running. Player.rb, PlayerListener.rb, and PlayerContactListener.rb. I won't cover every detail, but I'll try and get the key ideas. Rely on the full source to make sure you have everything.
 
      class Player
   
@@ -308,12 +308,25 @@ Now, I'll stop going through every line of code and just point out the key ideas
        
        ...
 
-Here you can see how to set up getters and setters and constants for a class in Ruby. pos will now be available as an instance variable defaulted to nil and can be accessed and read like this.
+Here you can see how to setup getters and setters and constants for a class in Ruby. pos will now be available as an instance variable defaulted to nil and can be accessed and read like this.
 
     @cam.position.x = @player.pos.x
     @player.pos = Vector2.new(0, 0)
     
-These can also be overriden if you need to put logic into a setter or getter.
+These can also be overriden if you need to put logic into a setter or getter in two different ways.
+
+    def pos(pos)
+    
+        #Do things related to setting @pos
+        @pos = pos
+        
+    end
+    
+To access this one treat it as a method.
+
+    @player.pos(Vector2.new)
+    
+I often prefer overriding the = symbol though.
 
     def pos=(pos)
     
@@ -323,6 +336,10 @@ These can also be overriden if you need to put logic into a setter or getter.
     end
     
 This can be accessed in the exact same way as the default setter.
+
+    @player.pos = Vector2.new
+
+There are couple things to say about how the animations are setup.
 
     frames = Java::ComBadlogicGdxUtils::Array.new
     
@@ -354,22 +371,17 @@ Player.rb 57:
     
 See how neither :left or :right were ever declared before this in the class. It doesn't matter to Ruby. @contacts is the number of objects the player's foot sensor is touching. If the player is facing left or right and and their feet are not contacting the ground then the frame is set for the correct jump animation. How @contacts is determined will come a little later.
 
-The setupBody method may seem complicated, but it is just a lot of the same thing over and over. This is where the capsule-like box2d body is setup for the player. It can easily be changed to setup a body for any entity in the game. As a matter of fact, I created the method by swapping a couple things in my setupEntity class for my game. I don't think there is much mroe that needs to be explained in the light of Ruby and Java. There are plenty of libgdx references if a particular method doesn't make sense.
-
-Ruby allows for an inline if statement like Java.
-
-    Gdx.app.exit if keycode == Keys::ESCAPE
-    
-This will act exactly as
-
-    if(keycode == Keys.ESCAPE) Gdx.app().exit();
-    
-does in Java.
+The setupBody method may seem complicated, but it is just a lot of the same thing over and over. This is where the capsule-like box2d body is setup for the player. It can easily be changed to setup a body for any entity in the game. As a matter of fact, I created the method by swapping a couple things in my setupEntity class for my game. I don't think there is much more that needs to be explained in Player.rb that is specific to Ruby. There are plenty of libgdx references if a particular method doesn't make sense.
 
 Finally, take a look at the slightly simpler "switch" statement that is in the keyDown method. In Ruby it is called "case". The number of contacts is used again here to make sure the player can't move or jump in the air.
 
 
+The two listeners are the last piece. The PlayerListener.rb is just more of the same. The PlayerContactListener.rb is almost exactly as you'd setup in Java.
 
+     if a.instance_of?(Player)
+     
+Notice Ruby's version of instanceOf. This is the general format for testing methods in Ruby. The same method is used to determine if the foot sensor has contacted a StaticTiledMapTile. Everytime it does the player's number of contacts is increased and then decreased when the contact ends. The foot sensor was given the number 0 as a userData object to tag it during collisions. This is in the setupBody method of player.
 
+If you run the completed program with the debugRenderer uncommented you should have a basic working platformer and a player that can climb stairs and jump around on the map. Request any clarifications or additions at 08kabbotta80@gmail.com or here.
 
 
