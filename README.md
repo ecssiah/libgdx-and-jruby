@@ -100,7 +100,7 @@ is equivalent to
 
     def onEvent type, source
     
-in Ruby. In Ruby they say you should use on_event instead of onEvent, but I don't like all the extra underscores you end up typing.
+In Ruby, they say you should use on_event instead of onEvent, but I don't like all the extra underscores you end up typing.
 
         ...
             
