@@ -20,7 +20,7 @@ class GameScreen
     @cam.position.set(Vector3.new(32, 26, 0))
     @cam.update
     
-    @renderer = OrthogonalTiledMapRenderer.new(@map, 1 / 16.0)
+    @renderer = OrthogonalTiledMapRenderer.new(@map, C::WTB)
     @renderer.getSpriteBatch.setProjectionMatrix(@cam.combined)
     @renderer.setView(@cam)
     

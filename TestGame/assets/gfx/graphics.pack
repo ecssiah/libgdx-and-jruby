@@ -1,0 +1,159 @@
+
+graphics.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+security1/enterDown1
+  rotate: false
+  xy: 2, 2
+  size: 64, 128
+  orig: 64, 128
+  offset: 0, 0
+  index: -1
+security1/idleDown1
+  rotate: false
+  xy: 2, 2
+  size: 64, 128
+  orig: 64, 128
+  offset: 0, 0
+  index: -1
+security1/enterUp1
+  rotate: false
+  xy: 68, 2
+  size: 64, 128
+  orig: 64, 128
+  offset: 0, 0
+  index: -1
+security1/idleUp1
+  rotate: false
+  xy: 68, 2
+  size: 64, 128
+  orig: 64, 128
+  offset: 0, 0
+  index: -1
+security1/idleLeft1
+  rotate: false
+  xy: 134, 2
+  size: 64, 128
+  orig: 64, 128
+  offset: 0, 0
+  index: -1
+security1/walkLeft5
+  rotate: false
+  xy: 134, 2
+  size: 64, 128
+  orig: 64, 128
+  offset: 0, 0
+  index: -1
+security1/walkLeft1
+  rotate: false
+  xy: 134, 2
+  size: 64, 128
+  orig: 64, 128
+  offset: 0, 0
+  index: -1
+security1/idleRight1
+  rotate: false
+  xy: 200, 2
+  size: 64, 128
+  orig: 64, 128
+  offset: 0, 0
+  index: -1
+security1/walkRight1
+  rotate: false
+  xy: 200, 2
+  size: 64, 128
+  orig: 64, 128
+  offset: 0, 0
+  index: -1
+security1/walkRight5
+  rotate: false
+  xy: 200, 2
+  size: 64, 128
+  orig: 64, 128
+  offset: 0, 0
+  index: -1
+security1/walkLeft2
+  rotate: false
+  xy: 266, 2
+  size: 64, 128
+  orig: 64, 128
+  offset: 0, 0
+  index: -1
+security1/walkLeft4
+  rotate: false
+  xy: 266, 2
+  size: 64, 128
+  orig: 64, 128
+  offset: 0, 0
+  index: -1
+security1/walkLeft3
+  rotate: false
+  xy: 332, 2
+  size: 64, 128
+  orig: 64, 128
+  offset: 0, 0
+  index: -1
+security1/walkLeft6
+  rotate: false
+  xy: 398, 2
+  size: 64, 128
+  orig: 64, 128
+  offset: 0, 0
+  index: -1
+security1/walkLeft8
+  rotate: false
+  xy: 398, 2
+  size: 64, 128
+  orig: 64, 128
+  offset: 0, 0
+  index: -1
+security1/walkLeft7
+  rotate: false
+  xy: 464, 2
+  size: 64, 128
+  orig: 64, 128
+  offset: 0, 0
+  index: -1
+security1/walkRight2
+  rotate: false
+  xy: 530, 2
+  size: 64, 128
+  orig: 64, 128
+  offset: 0, 0
+  index: -1
+security1/walkRight4
+  rotate: false
+  xy: 530, 2
+  size: 64, 128
+  orig: 64, 128
+  offset: 0, 0
+  index: -1
+security1/walkRight3
+  rotate: false
+  xy: 596, 2
+  size: 64, 128
+  orig: 64, 128
+  offset: 0, 0
+  index: -1
+security1/walkRight6
+  rotate: false
+  xy: 662, 2
+  size: 64, 128
+  orig: 64, 128
+  offset: 0, 0
+  index: -1
+security1/walkRight8
+  rotate: false
+  xy: 662, 2
+  size: 64, 128
+  orig: 64, 128
+  offset: 0, 0
+  index: -1
+security1/walkRight7
+  rotate: false
+  xy: 728, 2
+  size: 64, 128
+  orig: 64, 128
+  offset: 0, 0
+  index: -1
