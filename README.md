@@ -1,6 +1,3 @@
-Part 1
-======
-
 Setup
 -----
 
@@ -242,9 +239,6 @@ The initialize method is similar to the Java constructor. It is a private hidden
 
 You should now have a simple rendered map and associated camera with libGdx and JRuby.
 
-
-Part 2
-======
 
 Getting A Player On Screen
 --------------------------
