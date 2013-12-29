@@ -224,7 +224,7 @@ This will work for many purposes where you would use an enum in Java like the st
 
     :left, :right, :up, :down, :center
     
-You don't even need to declare symbols or instance variables ahead of time in Ruby. Just use them when you need them and the : or @ will tell Ruby how to handle them.
+You don't even need to declare symbols or instance variables ahead of time in Ruby. Just use them when you need them and the prefix will tell Ruby how to handle them.
 
 TextureSetup.rb:
 
