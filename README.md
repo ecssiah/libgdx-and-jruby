@@ -1,19 +1,19 @@
-LibGDX and Ruby
+LibGdx and Ruby
 ===============
 
-This is a general reference for using JRuby with libGDX. It does not explain libGdx in great detail. It is also a basic working platformer with some assets that are completely free to use in any way you want. The first half goes through every single piece of code to get a basic map on the screen. Then it covers adding a controllable player and box2d world in a more general sense. The full source code is in this repository in the TestGame directory. You should be able to import it directly into Eclipse and run it as a reference for following the tutorial.
+This is a general reference for using JRuby with libGdx. It does not explain libGdx in great detail. It is also a basic working platformer with some assets that are completely free to use in any way you want. The full source code is in this repository in the TestGame directory. You should be able to import it directly into Eclipse and run it as a reference for following the tutorial.
 
 What you need:
 * Eclipse
 * DLTK Plugin
 * JRuby
-* A decent understanding of libGDX
+* A decent understanding of libGdx
 
 
 Setup
 -----
 
-The Eclipse [DLTK plugin](http://www.eclipse.org/dltk/) does a decent job with JRuby. Just search for it in the marketplace. You'll be giving up some of the content-assist you had with Java (there is no shortcut to automatically add the right imports or quickfix), but Ruby comes with advantages of its own. Also, with the DLTK you still get basic things like auto-complete on your own objects and the builtin java classes. I have tried to get auto-complete for libgdx methods, but I don't think the plugin supports linking source to a Ruby project yet.
+The Eclipse [DLTK plugin](http://www.eclipse.org/dltk/) does a decent job with Ruby. Just search for it in the marketplace. You'll be giving up some of the content-assist you had with Java (there is no shortcut to automatically add the right imports or quickfix), but Ruby comes with advantages of its own. Also, with the DLTK you still get basic things like auto-complete on your own objects and the builtin java classes. I have tried to get auto-complete for libgdx methods, but I don't think the plugin supports linking source to a Ruby project yet.
 
 Since this is for the desktop, the project setup is very easy. Create a project directory like this.
 
