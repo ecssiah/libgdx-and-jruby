@@ -58,7 +58,7 @@ The project should now run. The second line is just a way of loading all of the 
 
     for i in @min..@max
     
-        #Do things with i while it runs from the value @min to @max
+        #Do things with i while it runs from the value @min up to @max
     
     end
 
