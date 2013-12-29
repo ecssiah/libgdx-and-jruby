@@ -13,7 +13,7 @@ What you need:
 Setup
 -----
 
-The Eclipse [DLTK plugin](http://www.eclipse.org/dltk/) does a decent job with Ruby. Just search for it in the marketplace. You'll be giving up some of the content-assist you had with Java (there is no shortcut to automatically add the right imports or quickfix), but Ruby comes with advantages of its own. Also, with the DLTK you still get basic things like auto-complete on your own objects and the builtin java classes. I have tried to get auto-complete for libgdx methods, but I don't think the plugin supports linking source to a Ruby project yet.
+The Eclipse [DLTK plugin](http://www.eclipse.org/dltk/) does a decent job with Ruby. Add it through the marketplace. You'll be giving up some of the content-assist you had with Java (there is no shortcut to automatically add the right imports or quickfix), but Ruby comes with advantages of its own. Also, with the DLTK you still get basic things like auto-complete on your own objects and the builtin java classes.
 
 Since this is for the desktop, the project setup is very easy. Create a project directory like this.
 
@@ -91,7 +91,7 @@ GameScreen.rb:
   
       def show()
       
-        TextureSetup.new
+        #TextureSetup.new
     
         @manager = AssetManager.new
         @manager.setLoader(TiledMap.java_class, TmxMapLoader.new(InternalFileHandleResolver.new))
@@ -105,7 +105,7 @@ GameScreen.rb:
         
         ...
         
-I won't explain how to use libGdx, but a couple things are worth noting with JRuby. When you want to refer to the underlying class you will need to use .java_class, because .class will now refer to the Ruby object which Java won't like. Other than that, notice that *all* of these parenthesis are optional. I use them when a method needs arguments and when defining a method, but both of these can be done away with.
+When you want to refer to the underlying class while using JRuby you will need to use .java_class, because .class will now refer to the Ruby object which Java won't accept. Other than that, notice that *all* of these parenthesis are optional. I use them when a method needs arguments and when defining a method, but both of these can be done away with.
 
     def onEvent(type, source)
 
@@ -115,8 +115,10 @@ is equivalent to
     
 In Ruby, they say you should use on_event instead of onEvent, but I don't like all the extra underscores you end up typing and the java methods you'll be using are CamelCase so it just seems smoother to ignore this rule in this case.
 
+GameScreen.rb:
+
         ...
-            
+
         @cam = OrthographicCamera.new(Gdx.graphics.getWidth * C::WTB, Gdx.graphics.getHeight * C::WTB)
         @cam.setToOrtho(false, 40, 30)
         @cam.position.set(Vector3.new(32, 26, 0))
@@ -139,6 +141,8 @@ You can access a java class directly. I used this in the case of the libGdx Arra
     frameTiles = Java::ComBadLogicUtils::Array.new
 
 You remove all the periods and use CamelCase to access the class directly without importing. I have no idea why they embraced the Camel here. If you needed to use it numerous times you could just create an alias for it using Ruby to avoid the warning. I find I rarely need to rely on a Java collection though.
+
+GameScreen.rb
 
       ...
         
@@ -254,17 +258,37 @@ You should now have a simple rendered map and associated camera with libGdx and 
 Collision With The Tile Map
 ---------------------------
 
-Before we can put a box2d player on the screen we have to make parts of the map solid. First, update your Initializer script with all of the new imports so that is out of the way. You can get the full list out of the repository. **Order can be important.** Make sure a class is available to be inherited or implemented when it is needed. That's already thought through in the repository Initializer.
+Before we can put a box2d player on the screen we have to make parts of the map solid. First, update your Initializer script with all of the new imports so that is out of the way. You can get the full list out of the repository. I won't print it here. **Order can be important.** Make sure a class is available to be inherited or implemented when it is needed. That's already thought through in the repository Initializer for this project. Just copy it and look it through.
 
-In GameScreen's show method add a quick reference to the number of map layers since it is used during rendering and there is no reason to keep looking it up. 
+GameScreen.rb will now have to be updated as well. In the show method the manager setup remains the same, but the rest will change a bit.
 
+GameScreen.rb show():
+
+    ...
+    
+    @manager.finishLoading
+
+    @atlas = @manager.get("assets/gfx/graphics.pack")
+    @map = @manager.get("assets/maps/level1.tmx")
+    
     @numLayers = @map.getLayers.getCount
     
-Also initialize a Box2DDebugRenderer so that we can see all the little boxes we're going to make.
-
-GameScreen.rb 26:
-
+    @camOffset = 10
+    @cam = OrthographicCamera.new(Gdx.graphics.getWidth * C::WTB, Gdx.graphics.getHeight * C::WTB)
+    
+    @renderer = OrthogonalTiledMapRenderer.new(@map, C::WTB)
+    @renderer.getSpriteBatch.setProjectionMatrix(@cam.combined)
+    @renderer.setView(@cam)
+    @batch = @renderer.getSpriteBatch
     @debugRenderer = Box2DDebugRenderer.new
+    
+    ...
+    
+Add a reference to the number of map layers, because it doesn't change and it is used during rendering so there is no reason to keep looking it up. @camOffset is to raise the camera over the player's head. Erase the setToOrtho and position assignments. The camera will now be following the player. Finally, add a box2d debug renderer so we can see the world we create.
+
+GameScreen.rb show():
+
+    ...
     
     @world = World.new(Vector2.new(0, C::GRAVITY), true)
     
@@ -282,23 +306,95 @@ GameScreen.rb 26:
     
   end
   
-The end of the show method lays the foundation for the box2d world and the player. Some constants need to be added to C.rb. C::PLAYER and C::TILE are hexadecimal constants that can be used for collision masking.
+  ...
+  
+Much of this doesn't exist yet, but it lays the foundation for the box2d world and control of the player. Some constants need to be added to C.rb as well. C::PLAYER and C::TILE are hexadecimal constants that are used for collision filtering. And C::GRAVITY is...well, the gravity. Add them now. Notice that the player's position is in world units and not pixels thanks to the box2d conversions.
 
 The update and render method are basic libgdx. Make sure to add the debugRenderer.render call.
 
-The renderLayers showcases a nice Ruby feature.
+GameScreen.rb update(delta):
+
+    @world.step(C::BOX_STEP, C::BOX_VELOCITY_ITERATIONS, C::BOX_POSITION_ITERATIONS)
+    
+    @cam.position.x = @player.pos.x
+    @cam.position.y = @player.pos.y + @camOffset
+    @cam.update
+    
+    @player.update(delta)
+    
+Step the box2d world using the predefined constants and have the camera follow the player.
+
+GameScreen.rb render(delta):
+
+    update(delta)
+    
+    Gdx.gl.glClearColor(0, 0, 0, 1)
+    Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
+
+    @renderer.setView(@cam)
+    
+    renderLayers
+    
+    #@debugRenderer.render(@world, @cam.combined)
+    
+The render method needs to be changed slightly. We will now move the rendering into its own methods, and add the call to the box2d debug renderer.
+
+GameScreen.rb renderLayers():
+
+    for i in 0...@numLayers
+      
+      tint = Math.exp(-0.22 * (@numLayers + 1 - i))
+      @batch.setColor(tint, tint, tint, 1)
+      
+      @batch.begin
+      
+        @renderer.renderTileLayer(@map.getLayers.get(i))
+        
+        if @map.getLayers.get(i).name == "mid"
+          @player.draw(@batch)
+        end
+      
+      @batch.end
+      
+    end
+    
+This method displays a nice Ruby feature.
 
     for i in 0...@numLayers
     
-Notice the slight difference. Normally in Java you'd need a (@numLayers - 1), but with Ruby ranges '..' means "up to and including" while '...' means just "up to". So by adding the third period into the range specification you avoid tagging on - 1 to a lot of things. For some reason, I feel like it would have made more sense if they were flipped, but it is still a nice feature.
+Notice the slight difference. Normally in Java you'd need a (@numLayers - 1), but with Ruby ranges .. means "up to and including" while ... means just "up to". So by adding the third period into the range you avoid tagging on - 1 to a lot of things. For some reason, I feel like it would have made more sense if they were flipped, but it is still a nice feature.
 
-Other than that, the only tricky part may be how the tint is used. Instead of trying to set different brightnesses for each layer I just use an exponential decay function. The function kind of looks like a roller coaster drop and makes a nice natural fall off of brightness. Since the layers are rendered in reverse order I use (@numLayers + 1 - i) to have the tint start dark and become full when it is at the final layer. Notice the + 1 because you want the brightness to be full when on the last layer which is @numLayers - 1. That gives you Math.exp(0) which is 1. The maximum value for the exponential function with coefficent 1.
+    for i in 0..6
+      puts i    #This will print 0, 1, 2, 3, 4, 5, 6
+    end
+    
+    for i in 0...6
+      puts i    #This will print 0, 1, 2, 3, 4, 5
+    end
+
+Other than that, the only tricky part may be how the tint is created. Instead of trying to set an individual brightness for each layer I just use an exponential decay function. The function kind of looks like a roller coaster drop and makes a nice natural fall off in brightness. It would look like this for 6 layers.
+
+Layer 6    |
+Layer 5    ||
+Layer 4    |||
+Layer 3    |||||
+Layer 2    ||||||||||
+Layer 1    |||||||||||||||||||
+Layer 0    ||||||||||||||||||||||||||||||||||||
+    
+Since the layers are rendered from the bottom up I use (@numLayers + 1 - i) to have the tint start dark and become full when it is at the final, or closest, layer. So it starts on the bottom right of the above graph and works towards the top left in brightness. Notice the + 1 because you want the brightness to be full when on the last layer which is i = @numLayers - 1. There is the - 1 we avoided using 0...@numLayers. If you substitute into that i into the function for the last rendered layer you get:
+
+    Math.exp(@numLayers + 1 - (@numLayers + 1))
+
+That gives you Math.exp(0) which is 1. That is the maximum value for the exponential function with coefficent 1. So you end up with the *last* layer rendererd being the brightest. And the first layer rendered being the darkest. As it should be.
 
 Also,
 
     if @map.getLayers.get(i).name == "mid"
+      @player.render(batch)
+    end
     
-just makes sure that the player is rendered right after the "mid" layer is rendered and at the same tint. The player is meant to be standing on the "mid" layer. That is the layer that will have solid blocks.
+makes sure that the player is rendered right after the "mid" layer is rendered and at the same tint. The player is meant to be standing on the "mid" layer. That is the layer that will have solid blocks.
 
 The next method is setupTileBodies where the solid tiles are given box2d bodies for collision. I won't go into how to use Tiled map editor, but if you open the map from the repository you'll see that some of the tiles are given a "solid" property. This will be used to build their box2d bodies. Since I'm taking these methods from my game you can see that they are intended to be used for multiple layers with different collision masks, but for now it is just a single layer that gets setup. The method goes through every tile in the layer and checks to see if it has the property of "solid".
 
