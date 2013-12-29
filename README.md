@@ -1,5 +1,5 @@
-LibGDX and Ruby
-===============
+LibGDX and JRuby
+================
 
 Setup
 -----
