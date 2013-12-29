@@ -84,6 +84,8 @@ Put the GameScreen script in '/objects'.
         @atlas = @manager.get("assets/gfx/graphics.pack")
         @map = @manager.get("assets/maps/level1.tmx")
         
+        ...
+        
 I won't explain how to use libGdx, but a couple things are worth noting with JRuby. When you want to refer to the underlying class you will need to use .java_class, because it will otherwise refer to the Ruby object which the Java library doesn't know how to handle. Other than that, notice that pretty much *all* parenthesis are optional. I use them when a method needs arguments and when defining a method, but both of these can be done away with.
 
     def onEvent(type, source)
@@ -93,6 +95,8 @@ is equivalent to
     def onEvent type, source
     
 in Ruby.
+
+        ...
             
         @cam = OrthographicCamera.new(Gdx.graphics.getWidth * C::WTB, Gdx.graphics.getHeight * C::WTB)
         @cam.setToOrtho(false, 40, 30)
@@ -105,6 +109,8 @@ in Ruby.
                 
       end
       
+      ...
+      
 When you need to refer to an object within a namespace you use the :: operator to access it. C::WTB is the "World to Box" conversion scale that is used in Box2d to get the units right. This is also how you access a subclass when importing from java.
 
     java_import com.badlogic.gdx.Input::Keys
@@ -115,6 +121,8 @@ You can also access a java class directly. I used this in the case of the libGdx
 
 You just access the Java namespace and then remove all the periods and use CamelCase to access the class directly without importing. If you needed to use it numerous times you could just create an alias for it.
 
+      ...
+        
       def render(delta)
         
         Gdx.gl.glClearColor(0, 0, 0, 1)
