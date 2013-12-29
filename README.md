@@ -1,6 +1,10 @@
 LibGDX and JRuby
 ================
 
+Files:
+[tileset1.png](http://wikisend.com/download/737764/tileset1.png)
+[level1.tmx](http://wikisend.com/download/422588/level1.tmx)
+
 Setup
 -----
 
