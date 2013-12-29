@@ -115,11 +115,11 @@ When you need to refer to an object within a namespace you use the :: operator t
 
     java_import com.badlogic.gdx.Input::Keys
 
-You can also access a java class directly. I used this in the case of the libGdx Array class, because otherwise it will bark at you about trying to redefine the Array that is included from Java. 
+You can also access a java class directly. I used this in the case of the libGdx Array class, because otherwise it will bark at you about trying to redefine the Array that is included from Java if try and use it in the general namespace by importing it.
 
     frameTiles = Java::ComBadLogicUtils::Array.new
 
-You just access the Java namespace and then remove all the periods and use CamelCase to access the class directly without importing. If you needed to use it numerous times you could just create an alias for it.
+You just remove all the periods and use CamelCase to access the class directly without importing. If you needed to use it numerous times you could just create an alias for it using Ruby to avoid the warning.
 
       ...
         
@@ -152,14 +152,16 @@ You just access the Java namespace and then remove all the periods and use Camel
   
     end
 
-You need to declare the implemented methods. Also, notice that Ruby treats almost all numbers the same. No more f's all over the place or issues with whether or not you sent a float or a int to a function. If you need to convert the number objects have short little methods built in.
+You need to declare the implemented methods. I think in Java it ignores them if they are missing. Also, notice that Ruby pretty much treats all numbers the same. No more f's all over the place or issues with whether or not you sent a float or a int to a function. If you need to convert something they have short little methods built in along with basic math functions.
 
     @float.to_i
     @integer.to_s
     
-These will take a float to an integer and an integer to a string. There are more .to_ methods. 
+These will take a float to an integer and an integer to a string. There are more .to_ methods and other builtins like .abs and exponentiation.
 
-Finally, to make it run the Initializer must be updated to include all of the new imports and require statements to include the other scripts.
+    @float**3
+
+To make it run the Initializer must be updated to include all of the new imports and require statements for the scripts you want to use.
 
     require 'java'
     
@@ -187,13 +189,20 @@ Finally, to make it run the Initializer must be updated to include all of the ne
     require 'src/util/C'
     require 'src/util/TextureSetup'
     
-Lastly, add the two utility scripts for the game's constants and texture packing. I name my constants script C. I don't know if this is considered bad practice, but I like how simple it is.
+Lastly, add the two utility scripts for the game's constants and texture packing. I name my constants script C. I don't know if this is considered bad practice, but I like how simple it is. Ruby has a more bare module object which works as a simple block of code instead of the full class structure where I put my constants that are used across many scripts like the Box2d conversions.
 
 C.rb:
 
-    BTW, WTB = 16.0, 1 / 16.0
+    module C
+
+      BOX_STEP = 1/45.0
+      BOX_VELOCITY_ITERATIONS = 8
+      BOX_POSITION_ITERATIONS = 3
+      BTW, WTB = 16.0, 1/16.0
     
-Any variable declared with a capital letter is considered a constant and shouldn't be changed. Notice Ruby allows for parallel assignment.
+    end
+    
+Any variable declared with a capital letter is considered a constant and shouldn't be changed. Ruby allows for parallel assignment.
 
 TextureSetup.rb:
 
@@ -207,4 +216,6 @@ TextureSetup.rb:
       
     end
 
-The initialize method is similar to the Java constructor. It is a private hidden method that is called through the .new method of a class. You should now have a simple rendered map and associated camera.
+The initialize method is similar to the Java constructor. It is a private hidden method that is called through the .new method of a class. 
+
+You should now have a simple rendered map and associated camera with libGdx and JRuby.
