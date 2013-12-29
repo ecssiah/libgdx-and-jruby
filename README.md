@@ -1,3 +1,15 @@
+LibGDX and Ruby
+===============
+
+This is a general reference for using JRuby with libGDX. It does not explain libGdx in great detail. It is also a basic working platformer with some assets that are completely free to use in any way you want. The first half goes through every single piece of code to get a basic map on the screen. Then it covers adding a controllable player and box2d world in a more general sense. The full source code is in this repository in the TestGame directory. You should be able to import it directly into Eclipse and run it as a reference for following the tutorial.
+
+What you need:
+* Eclipse
+* DLTK Plugin
+* JRuby
+* A decent understanding of libGDX
+
+
 Setup
 -----
 
