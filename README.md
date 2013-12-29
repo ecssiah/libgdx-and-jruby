@@ -2,7 +2,9 @@ LibGDX and JRuby
 ================
 
 Files:
+
 [tileset1.png](http://wikisend.com/download/737764/tileset1.png)
+    
 [level1.tmx](http://wikisend.com/download/422588/level1.tmx)
 
 Setup
@@ -98,7 +100,7 @@ is equivalent to
 
     def onEvent type, source
     
-in Ruby.
+in Ruby. In Ruby they say you should use on_event instead of onEvent, but I don't like all the extra underscores you end up typing.
 
         ...
             
@@ -115,15 +117,15 @@ in Ruby.
       
       ...
       
-When you need to refer to an object within a namespace you use the :: operator to access it. C::WTB is the "World to Box" conversion factor that is used in Box2d to get the units right. This is also how you access a subclass when importing from java.
+When you need to refer to an object within another namespace you use the :: operator to access it. C::WTB is the "World to Box" conversion factor that is used in Box2d to get the units right. This is also how you access a subclass or an enum when importing from java.
 
     java_import com.badlogic.gdx.Input::Keys
 
-You can also access a java class directly. I used this in the case of the libGdx Array class, because otherwise it will bark at you about trying to redefine the Array that is included from Java if try and use it in the general namespace by importing it.
+You can also access a java class directly. I used this in the case of the libGdx Array class, because otherwise it will bark at you about trying to redefine the Array that is included from Java.
 
     frameTiles = Java::ComBadLogicUtils::Array.new
 
-You remove all the periods and use CamelCase to access the class directly without importing. If you needed to use it numerous times you could just create an alias for it using Ruby to avoid the warning. I find I rarely need to rely on a Java collection instead of a Ruby array.
+You remove all the periods and use CamelCase to access the class directly without importing. I have no idea why they embraced the Camel here. If you needed to use it numerous times you could just create an alias for it using Ruby to avoid the warning. I find I rarely need to rely on a Java collection though.
 
       ...
         
@@ -156,7 +158,7 @@ You remove all the periods and use CamelCase to access the class directly withou
   
     end
 
-You need to declare the implemented methods. I think in Java it ignores them if they are missing. Also, notice that Ruby pretty much treats all numbers the same. No more f's all over the place or issues with whether or not you sent a float or an int to a method. If you need to convert something there are short little methods built in along with basic math functions.
+You need to declare the implemented methods from Screen. I think in Java it ignores them if they are missing. Also, notice that Ruby pretty much treats all numbers the same. No more f's all over the place or issues with whether or not you sent a float or an int to a method. If you need to convert something there are short little methods built in along with basic math functions.
 
     @float.to_i
     @integer.to_s
@@ -165,7 +167,7 @@ These will take a float to an integer and an integer to a string. There are more
 
     @float**3
     @float *= 3.14
-    @float <=> 0     #Works as a sign operator return 1, 0, -1 depending on the sign of the number
+    @float <=> 0     #Works as a sign operator, returns 1, 0, -1 depending on the sign of @float
 
 To make it run, the Initializer must be updated to include all of the new imports and require statements for the scripts that are now used by GameScreen.rb.
 
@@ -195,7 +197,7 @@ To make it run, the Initializer must be updated to include all of the new import
     require 'src/util/C'
     require 'src/util/TextureSetup'
     
-Lastly, add the two utility scripts for the game's constants and texture packing. I name my constants script C. I don't know if this is considered bad practice, but I like how simple it is. Ruby has a simple module object like Python which works as a block of code instead of the full class structure. This is where I put my constants that are used across many scripts.
+Lastly, add the two utility scripts for the game's constants and texture packing. I name my constants script C. I don't know if this is considered bad practice, but I like how simple it is. Ruby has a module object like Python which is just a block of code instead of the full class structure. This is where I put my constants that are used across many scripts in the game.
 
 C.rb:
 
@@ -208,11 +210,15 @@ C.rb:
     
     end
     
-Any variable declared with a capital letter in Ruby is considered a constant and shouldn't be changed. Ruby allows for parallel assignment as in the last line. This is also how I declare something like an enum.
+Any variable declared with a capital letter in Ruby is considered a constant and shouldn't be modified. Ruby allows for parallel assignment as in the last line. This is also how I declare something like an enum.
 
     Left, Right, Up, Down, Center = 0, 1, 2, 3, 4
     
-This will work for many purposes where you would use an enum in Java like the state of an entity.
+This will work for many purposes where you would use an enum in Java like the state of an entity. Alternatively, you could use symbols.
+
+    :left, :right, :up, :down, :center
+    
+You don't even need to declare symbols or instance variables ahead of time in Ruby. Just use them when you need them and the : or @ will tell Ruby how to handle them.
 
 TextureSetup.rb:
 
@@ -226,6 +232,6 @@ TextureSetup.rb:
       
     end
 
-The initialize method is similar to the Java constructor. It is a private hidden method that is called through the .new method of a class. Both .new and initialize() can be overriden separately so it is not identical to a Java constructor, but gets the same job done.
+The initialize method is similar to the Java constructor. It is a private hidden method that is called through the .new method of a Ruby class. Both .new and initialize() can be overriden separately so it is not identical to a Java constructor, but gets the same job done.
 
 You should now have a simple rendered map and associated camera with libGdx and JRuby.
