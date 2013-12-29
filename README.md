@@ -46,8 +46,8 @@ That's pretty much it. This should display a black window if we add the 'src/uti
     
 The project should now run. The second line is just a way of loading all of the jars out of the '/libs' folder in one swipe. Iterations in Ruby are done using the .each method for an object. JRuby allows you to call .each on native Java collections as well. The 'require 'java'' line allows direct access to all of the builtin Java classes. Of course, you will need to have installed [JRuby](https://github.com/jruby/jruby/wiki/GettingStarted).
 
-Seting Up A Camera and Tiled Map
---------------------------------
+Adding A Camera and Tiled Map
+-----------------------------
 
 To get a Tiled map displayed on a basic game screen we first need to add one line to 'TestGame.rb'.
 
@@ -83,6 +83,16 @@ Put the GameScreen script in '/objects'.
             
         @atlas = @manager.get("assets/gfx/graphics.pack")
         @map = @manager.get("assets/maps/level1.tmx")
+        
+I won't explain how to use libGdx, but a couple things are worth noting with JRuby. When you want to refer to the underlying class you will need to use .java_class, because it will otherwise refer to the Ruby object which the Java library doesn't know how to handle. Other than that, notice that pretty much *all* parenthesis are optional. I use them when a method needs arguments and when defining a method, but both of these can be done away with.
+
+    def onEvent(type, source)
+
+is equivalent to
+
+    def onEvent type, source
+    
+in Ruby.
             
         @cam = OrthographicCamera.new(Gdx.graphics.getWidth * C::WTB, Gdx.graphics.getHeight * C::WTB)
         @cam.setToOrtho(false, 40, 30)
@@ -95,7 +105,16 @@ Put the GameScreen script in '/objects'.
                 
       end
       
-    
+When you need to refer to an object within a namespace you use the :: operator to access it. C::WTB is the "World to Box" conversion scale that is used in Box2d to get the units right. This is also how you access a subclass when importing from java.
+
+    java_import com.badlogic.gdx.Input::Keys
+
+You can also access a java class directly. I used this in the case of the libGdx Array class, because otherwise it will bark at you about trying to redefine the Array that is included from Java. 
+
+    frameTiles = Java::ComBadLogicUtils::Array.new
+
+You just access the Java namespace and then remove all the periods and use CamelCase to access the class directly without importing. If you needed to use it numerous times you could just create an alias for it.
+
       def render(delta)
         
         Gdx.gl.glClearColor(0, 0, 0, 1)
@@ -125,7 +144,14 @@ Put the GameScreen script in '/objects'.
   
     end
 
-First, to make it run the Initializer must be updated to include all of the new imports.
+You need to define the implemented methods. Also, notice that Ruby treats almost all numbers the same. No more f's all over the place or issues with whether or not you sent a float or a int to a function. If you need to convert the number objects have short little methods built in.
+
+    @float.to_i
+    @integer.to_s
+    
+These will take a float to an integer and an integer to a string. There are more .to_ methods as well. 
+
+Finally, to make it run the Initializer must be updated to include all of the new imports.
 
     require 'java'
     
