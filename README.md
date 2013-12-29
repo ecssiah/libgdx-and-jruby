@@ -10,7 +10,7 @@ Files:
 Setup
 -----
 
-The Eclipse [DLTK plugin](http://www.eclipse.org/dltk/) does a decent job with JRuby. You'll be giving up some of the content-assist you had with Java (For instance, you don't have the shortcut to automatically require the right imports), but Ruby comes with advantages of its own. Also, with DLTK you still get some things like auto-complete.
+The Eclipse [DLTK plugin](http://www.eclipse.org/dltk/) does a decent job with JRuby. You'll be giving up some of the content-assist you had with Java (you don't have the shortcut to automatically add the right imports or quickfix), but Ruby comes with advantages of its own. Also, with DLTK you still get some things like auto-complete.
 
 Since this is for the desktop, the project setup is very easy. I create a project directory like this.
 
