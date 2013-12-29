@@ -170,7 +170,7 @@ You need to declare the implemented methods from Screen. I think in Java it igno
 These will take a float to an integer and an integer to a string. There are more .to_ methods and other builtins like .abs and exponentiation.
 
     @float**3
-    @float *= 3.14
+    @float *= Math::PI
     @float <=> 0     #Works as a sign operator, returns 1, 0, -1 depending on the sign of @float
 
 To make it run, the Initializer must be updated to include all of the new imports and require statements for the scripts that are now used by GameScreen.rb.
