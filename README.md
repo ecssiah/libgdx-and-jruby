@@ -103,8 +103,6 @@ GameScreen.rb:
         @atlas = @manager.get("assets/gfx/graphics.pack")
         @map = @manager.get("assets/maps/level1.tmx")
         
-        ...
-        
 When you want to refer to the underlying class while using JRuby you will need to use .java_class, because .class will now refer to the Ruby object which Java won't accept. Other than that, notice that *all* of these parenthesis are optional. I use them when a method needs arguments and when defining a method, but both of these can be done away with.
 
     def onEvent(type, source)
@@ -115,9 +113,7 @@ is equivalent to
     
 In Ruby, they say you should use on_event instead of onEvent, but I don't like all the extra underscores you end up typing and the java methods you'll be using are CamelCase so it just seems smoother to ignore this rule in this case.
 
-GameScreen.rb:
-
-        ...
+GameScreen.rb show:
 
         @cam = OrthographicCamera.new(Gdx.graphics.getWidth * C::WTB, Gdx.graphics.getHeight * C::WTB)
         @cam.setToOrtho(false, 40, 30)
@@ -130,8 +126,6 @@ GameScreen.rb:
                 
       end
       
-      ...
-      
 When you need to refer to an object within another namespace you use the :: operator to access it. C::WTB is the "World to Box" conversion factor that is used in Box2d to get the units right. This is also how you access a subclass or an enum when importing from java.
 
     java_import com.badlogic.gdx.Input::Keys
@@ -142,10 +136,10 @@ You can access a java class directly. I used this in the case of the libGdx Arra
 
 You remove all the periods and use CamelCase to access the class directly without importing. I have no idea why they embraced the Camel here. If you needed to use it numerous times you could just create an alias for it using Ruby to avoid the warning. I find I rarely need to rely on a Java collection though.
 
-GameScreen.rb
+GameScreen.rb:
 
       ...
-        
+            
       def render(delta)
         
         Gdx.gl.glClearColor(0, 0, 0, 1)
@@ -262,7 +256,7 @@ Before we can put a box2d player on the screen we have to make parts of the map 
 
 GameScreen.rb will now have to be updated as well. In the show method the manager setup remains the same, but the rest will change a bit.
 
-GameScreen.rb show():
+GameScreen.rb show:
 
     ...
     
@@ -286,7 +280,7 @@ GameScreen.rb show():
     
 Add a reference to the number of map layers, because it doesn't change and it is used during rendering so there is no reason to keep looking it up. @camOffset is to raise the camera over the player's head. Erase the setToOrtho and position assignments. The camera will now be following the player. Finally, add a box2d debug renderer so we can see the world we create.
 
-GameScreen.rb show():
+GameScreen.rb show:
 
     ...
     
@@ -306,13 +300,11 @@ GameScreen.rb show():
     
   end
   
-  ...
-  
 Much of this doesn't exist yet, but it lays the foundation for the box2d world and control of the player. Some constants need to be added to C.rb as well. C::PLAYER and C::TILE are hexadecimal constants that are used for collision filtering. And C::GRAVITY is...well, the gravity. Add them now. Notice that the player's position is in world units and not pixels thanks to the box2d conversions.
 
-The update and render method are basic libgdx. Make sure to add the debugRenderer.render call.
+Make sure to add the debugRenderer.render call.
 
-GameScreen.rb update(delta):
+GameScreen.rb update:
 
     @world.step(C::BOX_STEP, C::BOX_VELOCITY_ITERATIONS, C::BOX_POSITION_ITERATIONS)
     
@@ -324,7 +316,7 @@ GameScreen.rb update(delta):
     
 Step the box2d world using the predefined constants and have the camera follow the player.
 
-GameScreen.rb render(delta):
+GameScreen.rb render:
 
     update(delta)
     
@@ -339,7 +331,7 @@ GameScreen.rb render(delta):
     
 The render method needs to be changed slightly. We will now move the rendering into its own methods, and add the call to the box2d debug renderer.
 
-GameScreen.rb renderLayers():
+GameScreen.rb renderLayers:
 
     for i in 0...@numLayers
       
@@ -396,13 +388,51 @@ Also,
     
 makes sure that the player is rendered right after the "mid" layer is rendered and at the same tint. The player is meant to be standing on the "mid" layer. That is the layer that will have solid blocks.
 
+GameScreen.rb setupTileBodies:
+
 The next method is setupTileBodies where the solid tiles are given box2d bodies for collision. I won't go into how to use Tiled map editor, but if you open the map from the repository you'll see that some of the tiles are given a "solid" property. This will be used to build their box2d bodies. Since I'm taking these methods from my game you can see that they are intended to be used for multiple layers with different collision masks, but for now it is just a single layer that gets setup. The method goes through every tile in the layer and checks to see if it has the property of "solid".
 
     next if tileLayer.getCell(col, row).nil?
 
 This is another inline if statement that will jump to the next iteration if the current cell of the map contains no tile. The rest is basic box2d stuff. The tile object is set as userData. This will be used later. That is it for the new GameScreen script, but we need to add a few classes before anything will run.
 
+GameScreen.rb setupTileBodies:
 
+    tileLayer = @map.getLayers.get(layerName)
+      
+    for col in 0..tileLayer.getWidth
+      
+      for row in 0..tileLayer.getHeight
+        
+        next if tileLayer.getCell(col, row).nil?
+          
+        if tileLayer.getCell(col, row).getTile.getProperties.get("solid")
+          
+          bodyDef = BodyDef.new
+          bodyDef.position.set(Vector2.new(col + 0.5, row + 0.5))
+            
+          body = @world.createBody(bodyDef)
+          
+          body.setUserData(tileLayer.getCell(col, row).getTile)
+          
+          box = PolygonShape.new
+          box.setAsBox(0.5, 0.5)
+          
+          fixtureDef = FixtureDef.new
+          fixtureDef.shape = box
+          fixtureDef.filter.categoryBits = category
+          fixtureDef.filter.maskBits = mask
+          
+          body.createFixture(fixtureDef)
+          
+          box.dispose
+          
+        end
+        
+      end
+    
+    end
+    
 Getting A Player Setup
 ----------------------
 
