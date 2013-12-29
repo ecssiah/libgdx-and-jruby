@@ -239,6 +239,11 @@ The initialize method is similar to the Java constructor. It is a private hidden
 
 You should now have a simple rendered map and associated camera with libGdx and JRuby.
 
+Collision With The Tile Map
+---------------------------
+
+Before we can put a box2d player on the screen we have to make parts of the map solid. First, update your Initializer script with all of the new imports so that is out of the way. You can get the full list out of the repository.
+
 
 Getting A Player On Screen
 --------------------------
@@ -301,7 +306,7 @@ See how neither :left or :right were ever declared before this in the class. It 
 
 The setupBody method may seem complicated, but it is just a lot of the same thing over and over. This is where the capsule-like box2d body is setup for the player. It can easily be changed to setup a body for any entity in the game. As a matter of fact, I created the method by swapping a couple things in my setupEntity class for my game. I don't think there is much mroe that needs to be explained in the light of Ruby and Java. There are plenty of libgdx references if a particular method doesn't make sense.
 
-One last thing to notice is in the keyDown method. Ruby allows for an inline if statement like Java.
+Ruby allows for an inline if statement like Java.
 
     Gdx.app.exit if keycode == Keys::ESCAPE
     
@@ -311,6 +316,10 @@ This will act exactly as
     
 does in Java.
 
+Finally, take a look at the slightly simpler "switch" statement that is in the keyDown method. In Ruby it is called "case". The number of contacts is used again here to make sure the player can't move or jump in the air.
 
-Collision With The Tile Map
----------------------------
+
+
+
+
+
