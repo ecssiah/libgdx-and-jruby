@@ -40,7 +40,7 @@ We need a simple Ruby script to test the setup. Add TestGame.rb to '/src'.
 
     LwjglApplication.new(TestGame.new, "Test Game", 800, 600, true)
     
-That's pretty much it. The boolean argument tells libGdx to use OpenGL 2.0. You'll need this or you'll have to put false and change the import to GL10. This should display a black window if we add the Initializer.rb script to 'src/util'. This is just a convenience to avoid having imports clutter up all of your scripts. For now, this is all that is needed.
+That's pretty much it. The boolean argument tells libGdx to use OpenGL 2.0. If you don't install 2.0 then you'll have to put false and change the import to GL10. This should display a black window if we add the Initializer.rb script to 'src/util'. This is just a convenience to avoid having imports clutter up all of your scripts. For now, this is all that is needed.
 
     require 'java'
     
