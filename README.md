@@ -57,9 +57,7 @@ Initializer.rb:
 The project should now run. The second line is just a way of loading all of the jars out of the '/libs' folder in one swipe. Iterations in Ruby are done using the .each method of an object. JRuby allows you to call .each on native Java collections as well. If you want an index then Ruby has a nice clean for loop.
 
     for i in @min..@max
-    
-        #Do things with i while it runs from the value @min up to @max
-    
+      #Do things with i while it runs from the value @min up to @max
     end
 
 The first line allows direct access to all of the builtin Java classes. Of course, you will need to have installed [JRuby](https://github.com/jruby/jruby/wiki/GettingStarted).
