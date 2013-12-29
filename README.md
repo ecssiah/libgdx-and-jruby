@@ -382,11 +382,11 @@ Other than that, the only tricky part may be how the tint is created. Instead of
     Layer 1    |||||||||||||||||||
     Layer 0    ||||||||||||||||||||||||||||||||||||
     
-Since the layers are rendered from the bottom up I use (@numLayers + 1 - i) to have the tint start dark and become full when it is at the final, or closest, layer. So it starts on the bottom right of the above graph and works towards the top left in brightness. Notice the + 1 because you want the brightness to be full when on the last layer which is i = @numLayers - 1. There is the - 1 we avoided using 0...@numLayers. If you substitute into that i into the function for the last rendered layer you get:
+Since the layers are rendered from the bottom up I use (@numLayers - 1 - i) for the argument to the function. This is so that the tint starts dark and becomes brightest when it is at the final, or closest, layer which is rendered last. It contains the - 1 we avoided by using 0...6 instead of 0..6. So on the "graph" it starts at the bottom right and works towards the top left. Really we are going backwards through the function. This is why you need (@numLayers - 1 - i) instead of just i as the argument. You could also just resort layers, but you'll find that you then have to go backwards through them to render them since you draw from back to front. Pick your poison. If you substitute the final index i = @numLayers - 1 into the function you get:
 
-    Math.exp(@numLayers + 1 - (@numLayers + 1))
+    Math.exp(@numLayers - 1 - (@numLayers - 1))
 
-That gives you Math.exp(0) which is 1. That is the maximum value for the exponential function with coefficent 1. So you end up with the *last* layer rendererd being the brightest. And the first layer rendered being the darkest. As it should be.
+That gives you Math.exp(0) or e^0 which is 1. That is the maximum value for the exponential function with coefficent 1. So you end up with the *last* layer rendererd being the brightest. And the first layer rendered being the darkest. As it should be.
 
 Also,
 
