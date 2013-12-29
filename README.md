@@ -374,13 +374,13 @@ Notice the slight difference. Normally in Java you'd need a (@numLayers - 1), bu
 
 Other than that, the only tricky part may be how the tint is created. Instead of trying to set an individual brightness for each layer I just use an exponential decay function. The function kind of looks like a roller coaster drop and makes a nice natural fall off in brightness. It would look like this for 6 layers.
 
-Layer 6    |
-Layer 5    ||
-Layer 4    |||
-Layer 3    |||||
-Layer 2    ||||||||||
-Layer 1    |||||||||||||||||||
-Layer 0    ||||||||||||||||||||||||||||||||||||
+    Layer 6    |
+    Layer 5    ||
+    Layer 4    |||
+    Layer 3    |||||
+    Layer 2    ||||||||||
+    Layer 1    |||||||||||||||||||
+    Layer 0    ||||||||||||||||||||||||||||||||||||
     
 Since the layers are rendered from the bottom up I use (@numLayers + 1 - i) to have the tint start dark and become full when it is at the final, or closest, layer. So it starts on the bottom right of the above graph and works towards the top left in brightness. Notice the + 1 because you want the brightness to be full when on the last layer which is i = @numLayers - 1. There is the - 1 we avoided using 0...@numLayers. If you substitute into that i into the function for the last rendered layer you get:
 
