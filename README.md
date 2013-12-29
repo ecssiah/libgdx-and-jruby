@@ -243,8 +243,73 @@ You should now have a simple rendered map and associated camera with libGdx and 
 Getting A Player On Screen
 --------------------------
 
+Now, I'll stop going through every line of code and just point out the key ideas. The full source is in the TestGame folder in this repository. You should be able to import it directly into Eclipse as a project if you're on Linux. Add the Player.rb, PlayerListener.rb, and PlayerContactListener.rb scripts.
 
+     class Player
+  
+       attr_accessor :pos, :vel, :body, :contacts
+   
+       MAX_VELX, MAX_VELY = 20, 30
+       
+       ...
 
+Here you can see how to set up getters and setters and constants for a class in Ruby. pos will now be available as an instance variable defaulted to nil and can be accessed and read like this.
+
+    @cam.position.x = @player.pos.x
+    @player.pos = Vector2.new(0, 0)
+    
+These can also be overriden if you need to put logic into a setter or getter.
+
+    def pos=(pos)
+    
+        #Do things related to setting @pos
+        @pos = pos
+    
+    end
+    
+This can be accessed in the exact same way as the default setter.
+
+    frames = Java::ComBadlogicGdxUtils::Array.new
+    
+    for i in 1..8
+      frames.add(@atlas.findRegion("security1/walkLeft#{i}"))
+    end
+    
+    @walkLeft = Animation.new(0.0874, frames)
+    
+This is an example of accessing a Java class directly. Since Animation takes a libGDX Array it was easier to start with one instead of trying to convert it afterwards. You can also see how Ruby lets you embed a variable into a string. This would also work.
+
+    frames.add(@atlas.findRegion("security1/walkLeft" + i.to_s))
+    
+The update method for Player doesn't really have much to point out. It's all pretty much basic libGdx movement stuff. You can see the use of some symbols there.
+
+Player.rb 57:
+
+    ...
+
+    if @contacts == 0
+             
+      if @facing == :left
+        @frame = @jumpLeft.getKeyFrame(@stateTime, true)
+      elsif @facing == :right
+        @frame = @jumpRight.getKeyFrame(@stateTime, true)
+      end
+      
+      ...
+    
+See how neither :left or :right were ever declared before this in the class. It doesn't matter to Ruby. @contacts is the number of objects the player's foot sensor is touching. If the player is facing left or right and and their feet are not contacting the ground then the frame is set for the correct jump animation. How @contacts is determined will come a little later.
+
+The setupBody method may seem complicated, but it is just a lot of the same thing over and over. This is where the capsule-like box2d body is setup for the player. It can easily be changed to setup a body for any entity in the game. As a matter of fact, I created the method by swapping a couple things in my setupEntity class for my game. I don't think there is much mroe that needs to be explained in the light of Ruby and Java. There are plenty of libgdx references if a particular method doesn't make sense.
+
+One last thing to notice is in the keyDown method. Ruby allows for an inline if statement like Java.
+
+    Gdx.app.exit if keycode == Keys::ESCAPE
+    
+This will act exactly as
+
+    if(keycode == Keys.ESCAPE) Gdx.app().exit();
+    
+does in Java.
 
 
 Collision With The Tile Map
