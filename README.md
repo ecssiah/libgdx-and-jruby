@@ -288,12 +288,15 @@ Also,
     
 just makes sure that the player is rendered right after the "mid" layer is rendered and at the same tint. The player is meant to be standing on the "mid" layer. That is the layer that will have solid blocks.
 
-The next method is setupTileBodies where the solid tiles are given box2d bodies for collision.
+The next method is setupTileBodies where the solid tiles are given box2d bodies for collision. I won't go into how to use Tiled map editor, but if you open the map from the repository you'll see that some of the tiles are given a "solid" property. This will be used to build their box2d bodies. Since I'm taking these methods from my game you can see that they are intended to be used for multiple layers with different collision masks, but for now it is just a single layer that gets setup. The method goes through every tile in the layer and checks to see if it has the property of "solid".
+
+    next if tileLayer.getCell(col, row).nil?
+
+This is another inline if statement that will jump to the next iteration if the current cell of the map contains no tile. The rest is basic box2d stuff. The tile object is set as userData. This will be used later. That is it for the new GameScreen script, but we need to add a few classes before anything will run.
 
 
-
-Getting A Player On Screen
---------------------------
+Getting A Player Setup
+----------------------
 
 Now, I'll stop going through every line of code and just point out the key ideas. The full source is in the TestGame folder in this repository. You should be able to import it directly into Eclipse as a project if you're on Linux. Add the Player.rb, PlayerListener.rb, and PlayerContactListener.rb scripts.
 
