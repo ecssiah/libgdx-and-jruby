@@ -60,6 +60,9 @@ Now we need the GameScreen class. I setup my '/src' directory like this.
     /src/logic
     /src/objects
     /src/util
+    
+With TestGame sitting outside alone.
+
     /src/TestGame.rb
     
 Put the GameScreen script in '/objects'.
@@ -122,4 +125,50 @@ Put the GameScreen script in '/objects'.
   
     end
 
+First, to make it run the Initializer must be updated to include all of the new imports.
 
+    require 'java'
+    
+    Dir["libs/\*.jar"].each { |jar| require jar }
+    
+    java_import com.badlogic.gdx.backends.lwjgl.LwjglApplication
+    
+    java_import com.badlogic.gdx.Gdx
+    java_import com.badlogic.gdx.Game
+    java_import com.badlogic.gdx.Screen
+    java_import com.badlogic.gdx.graphics.GL20
+    java_import com.badlogic.gdx.graphics.OrthographicCamera
+    java_import com.badlogic.gdx.graphics.g2d.TextureRegion
+    java_import com.badlogic.gdx.graphics.g2d.TextureAtlas
+    java_import com.badlogic.gdx.assets.AssetManager
+    java_import com.badlogic.gdx.assets.loaders.TextureAtlasLoader
+    java_import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver
+    java_import com.badlogic.gdx.maps.tiled.TiledMap
+    java_import com.badlogic.gdx.maps.tiled.TmxMapLoader
+    java_import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer
+    java_import com.badlogic.gdx.math.Vector3
+    java_import com.badlogic.gdx.tools.imagepacker.TexturePacker2
+    
+    require 'src/objects/GameScreen'
+    require 'src/util/C'
+    require 'src/util/TextureSetup'
+    
+Lastly, add the two utility scripts for the game's constants and texture packing. I name my constants script C. I don't know if this is considered bad practice, but I like how simple it is.
+
+C.rb
+
+    BTW, WTB = 16.0, 1 / 16.0
+
+TextureSetup.rb
+
+    class TextureSetup
+      
+      def initialize()
+        
+        TexturePacker2.process("assets/gfx", "assets/gfx", "graphics.pack")
+        
+      end
+      
+    end
+
+You should now have a simple rendered map and associated camera.
