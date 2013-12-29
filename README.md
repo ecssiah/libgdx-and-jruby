@@ -3,9 +3,9 @@ LibGDX and Ruby
 
 Files:
 
-  [tileset1.png](http://wikisend.com/download/737764/tileset1.png)
+[tileset1.png](http://wikisend.com/download/737764/tileset1.png)
     
-  [level1.tmx](http://wikisend.com/download/422588/level1.tmx)
+[level1.tmx](http://wikisend.com/download/422588/level1.tmx)
 
 Setup
 -----
@@ -14,7 +14,6 @@ The Eclipse [DLTK plugin](http://www.eclipse.org/dltk/) does a decent job with J
 
 Since this is for the desktop, the project setup is very easy. I create a project directory like this.
 
-    /TestGame
     /TestGame/assets
     /TestGame/libs
     /TestGame/src
