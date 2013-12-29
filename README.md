@@ -1,17 +1,13 @@
 Part 1
 ======
 
-Setup
------
++ Setup
 
-Adding A Camera and Tiled Map
------------------------------
++ Adding A Camera and Tiled Map
 
 Part 2
 ======
 
-Getting A Player On Screen
---------------------------
++ Getting A Player On Screen
 
-Collision With The Tile Map
----------------------------
++ Collision With The Tile Map
