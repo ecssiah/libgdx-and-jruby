@@ -1,5 +1,5 @@
-LibGDX and JRuby
-================
+LibGDX and Ruby
+===============
 
 Files:
 
