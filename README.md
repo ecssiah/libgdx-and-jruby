@@ -96,7 +96,7 @@ GameScreen.rb:
         
         ...
         
-I won't explain how to use libGdx, but a couple things are worth noting with JRuby. When you want to refer to the underlying class you will need to use .java_class, because .class will now refer to the Ruby object which Java won't like. Other than that, notice that pretty much *all* parenthesis are optional. I use them when a method needs arguments and when defining a method, but both of these can be done away with.
+I won't explain how to use libGdx, but a couple things are worth noting with JRuby. When you want to refer to the underlying class you will need to use .java_class, because .class will now refer to the Ruby object which Java won't like. Other than that, notice that *all* of these parenthesis are optional. I use them when a method needs arguments and when defining a method, but both of these can be done away with.
 
     def onEvent(type, source)
 
