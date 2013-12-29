@@ -6,9 +6,9 @@ Setup
 
 The Eclipse [DLTK plugin](http://www.eclipse.org/dltk/) does a decent job with JRuby. You'll be giving up some of the content-assist you had with Java in Eclipse (For instance, you don't have the shortcut to automatically require the right imports), but Ruby comes with advantages of its own. One of my favorite is the way it deals with getters and setters.
 
-    attr_writer :instance_var    #Setter
-    attr_reader :instance_var    #Getter
-    attr_accessor :instance_var  #Setter & Getter
+    attr_writer :instance        #Setter for @instance
+    attr_reader :instance        #Getter for @instance
+    attr_accessor :instance      #Setter & Getter
 
 Also, with DLTK you still get some things like auto-complete.
 
