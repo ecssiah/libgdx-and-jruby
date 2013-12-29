@@ -144,14 +144,14 @@ You just access the Java namespace and then remove all the periods and use Camel
   
     end
 
-You need to define the implemented methods. Also, notice that Ruby treats almost all numbers the same. No more f's all over the place or issues with whether or not you sent a float or a int to a function. If you need to convert the number objects have short little methods built in.
+You need to declare the implemented methods. Also, notice that Ruby treats almost all numbers the same. No more f's all over the place or issues with whether or not you sent a float or a int to a function. If you need to convert the number objects have short little methods built in.
 
     @float.to_i
     @integer.to_s
     
-These will take a float to an integer and an integer to a string. There are more .to_ methods as well. 
+These will take a float to an integer and an integer to a string. There are more .to_ methods. 
 
-Finally, to make it run the Initializer must be updated to include all of the new imports.
+Finally, to make it run the Initializer must be updated to include all of the new imports and require statements to include the other scripts.
 
     require 'java'
     
@@ -181,11 +181,13 @@ Finally, to make it run the Initializer must be updated to include all of the ne
     
 Lastly, add the two utility scripts for the game's constants and texture packing. I name my constants script C. I don't know if this is considered bad practice, but I like how simple it is.
 
-C.rb
+C.rb:
 
     BTW, WTB = 16.0, 1 / 16.0
+    
+Any variable declared with a capital letter is considered a constant and shouldn't be changed. Notice Ruby allows for parallel assignment.
 
-TextureSetup.rb
+TextureSetup.rb:
 
     class TextureSetup
       
@@ -197,4 +199,4 @@ TextureSetup.rb
       
     end
 
-You should now have a simple rendered map and associated camera.
+The initialize method is similar to the Java constructor. It is a private hidden method that is called through the .new method of a class. You should now have a simple rendered map and associated camera.
