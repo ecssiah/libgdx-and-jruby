@@ -49,23 +49,23 @@ The project should now run. The second line is just a way of loading all of the 
 Adding A Camera and Tiled Map
 -----------------------------
 
-To get a Tiled map displayed on a basic game screen we first need to add one line to 'TestGame.rb'.
+To get a Tiled map displayed on a basic game screen we first need to add one line to TestGame.rb.
 
     def create()
       setScreen(GameScreen.new)
     end
 
-Now we need the GameScreen class. I setup my '/src' directory like this.
+Now we need the GameScreen.rb class. I setup my '/src' directory like this.
 
     /src/logic
     /src/objects
     /src/util
     
-With TestGame sitting outside alone.
+With TestGame.rb sitting outside alone.
 
     /src/TestGame.rb
     
-Put the GameScreen script in '/objects'.
+Put the GameScreen.rb script in '/objects'.
 
     class GameScreen
       java_implements Screen
@@ -86,7 +86,7 @@ Put the GameScreen script in '/objects'.
         
         ...
         
-I won't explain how to use libGdx, but a couple things are worth noting with JRuby. When you want to refer to the underlying class you will need to use .java_class, because it will otherwise refer to the Ruby object which the Java library doesn't know how to handle. Other than that, notice that pretty much *all* parenthesis are optional. I use them when a method needs arguments and when defining a method, but both of these can be done away with.
+I won't explain how to use libGdx, but a couple things are worth noting with JRuby. When you want to refer to the underlying class you will need to use .java_class, because .class will now refer to the Ruby object which Java won't like. Other than that, notice that pretty much *all* parenthesis are optional. I use them when a method needs arguments and when defining a method, but both of these can be done away with.
 
     def onEvent(type, source)
 
@@ -103,7 +103,7 @@ in Ruby.
         @cam.position.set(Vector3.new(32, 26, 0))
         @cam.update
             
-        @renderer = OrthogonalTiledMapRenderer.new(@map, 1 / 16.0)
+        @renderer = OrthogonalTiledMapRenderer.new(@map, C::WTB)
         @renderer.getSpriteBatch.setProjectionMatrix(@cam.combined)
         @renderer.setView(@cam)
                 
@@ -111,7 +111,7 @@ in Ruby.
       
       ...
       
-When you need to refer to an object within a namespace you use the :: operator to access it. C::WTB is the "World to Box" conversion scale that is used in Box2d to get the units right. This is also how you access a subclass when importing from java.
+When you need to refer to an object within a namespace you use the :: operator to access it. C::WTB is the "World to Box" conversion factor that is used in Box2d to get the units right. This is also how you access a subclass when importing from java.
 
     java_import com.badlogic.gdx.Input::Keys
 
@@ -119,7 +119,7 @@ You can also access a java class directly. I used this in the case of the libGdx
 
     frameTiles = Java::ComBadLogicUtils::Array.new
 
-You just remove all the periods and use CamelCase to access the class directly without importing. If you needed to use it numerous times you could just create an alias for it using Ruby to avoid the warning.
+You remove all the periods and use CamelCase to access the class directly without importing. If you needed to use it numerous times you could just create an alias for it using Ruby to avoid the warning. I find I rarely need to rely on a Java collection instead of a Ruby array.
 
       ...
         
@@ -152,7 +152,7 @@ You just remove all the periods and use CamelCase to access the class directly w
   
     end
 
-You need to declare the implemented methods. I think in Java it ignores them if they are missing. Also, notice that Ruby pretty much treats all numbers the same. No more f's all over the place or issues with whether or not you sent a float or a int to a function. If you need to convert something they have short little methods built in along with basic math functions.
+You need to declare the implemented methods. I think in Java it ignores them if they are missing. Also, notice that Ruby pretty much treats all numbers the same. No more f's all over the place or issues with whether or not you sent a float or an int to a method. If you need to convert something there are short little methods built in along with basic math functions.
 
     @float.to_i
     @integer.to_s
@@ -160,8 +160,10 @@ You need to declare the implemented methods. I think in Java it ignores them if 
 These will take a float to an integer and an integer to a string. There are more .to_ methods and other builtins like .abs and exponentiation.
 
     @float**3
+    @float *= 3.14
+    @float <=> 0     #Works as a sign operator return 1, 0, -1 depending on the sign of the number
 
-To make it run the Initializer must be updated to include all of the new imports and require statements for the scripts you want to use.
+To make it run, the Initializer must be updated to include all of the new imports and require statements for the scripts that are now used by GameScreen.rb.
 
     require 'java'
     
@@ -189,7 +191,7 @@ To make it run the Initializer must be updated to include all of the new imports
     require 'src/util/C'
     require 'src/util/TextureSetup'
     
-Lastly, add the two utility scripts for the game's constants and texture packing. I name my constants script C. I don't know if this is considered bad practice, but I like how simple it is. Ruby has a more bare module object which works as a simple block of code instead of the full class structure where I put my constants that are used across many scripts like the Box2d conversions.
+Lastly, add the two utility scripts for the game's constants and texture packing. I name my constants script C. I don't know if this is considered bad practice, but I like how simple it is. Ruby has a simple module object like Python which works as a block of code instead of the full class structure. This is where I put my constants that are used across many scripts.
 
 C.rb:
 
@@ -202,7 +204,11 @@ C.rb:
     
     end
     
-Any variable declared with a capital letter is considered a constant and shouldn't be changed. Ruby allows for parallel assignment.
+Any variable declared with a capital letter in Ruby is considered a constant and shouldn't be changed. Ruby allows for parallel assignment as in the last line. This is also how I declare something like an enum.
+
+    Left, Right, Up, Down, Center = 0, 1, 2, 3, 4
+    
+This will work for many purposes where you would use an enum in Java like the state of an entity.
 
 TextureSetup.rb:
 
@@ -216,6 +222,6 @@ TextureSetup.rb:
       
     end
 
-The initialize method is similar to the Java constructor. It is a private hidden method that is called through the .new method of a class. 
+The initialize method is similar to the Java constructor. It is a private hidden method that is called through the .new method of a class. Both .new and initialize() can be overriden separately so it is not identical to a Java constructor, but gets the same job done.
 
 You should now have a simple rendered map and associated camera with libGdx and JRuby.
