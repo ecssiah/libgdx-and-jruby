@@ -3,19 +3,19 @@ LibGdx and Ruby
 Platformer Tutorial
 -------------------
 
-This is a general reference for using Ruby with libGdx. It does not explain libGdx in great detail. It is also a tutorial for creating a basic working platformer with some assets that are free to use in any way you want. The full project is in this repository in the TestGame directory. You should be able to import it directly into Eclipse and run it as a reference for following the tutorial if you're on Linux. If you're on Windows, then swap your gdx files into the /libs folder.
+This is a general reference for using Ruby with libGdx. It does not explain libGdx in great detail, but it is fairly thorough. It is also a tutorial for creating a basic working platformer using Ruby and libGdx. It includes some assets that are free to use in any way you want. The full project is in this repository in the TestGame directory. You should be able to import it directly into Eclipse and run it as a reference for following the tutorial if you're on Linux. If you're on Windows, then swap your gdx jars into '/libs'.
 
 What you need:
 * Eclipse
-* DLTK Plugin
-* JRuby
+* [DLTK plugin](http://www.eclipse.org/dltk/)
+* [JRuby](https://github.com/jruby/jruby/wiki/GettingStarted)
 * Assets from this repository
-* libGdx, and a decent understanding of it
+* [libGdx](http://libgdx.badlogicgames.com/nightlies/), and a decent understanding of it
 
 Setup
 -----
 
-The Eclipse [DLTK plugin](http://www.eclipse.org/dltk/) does a decent job with Ruby. Add it through the marketplace. You'll be giving up some of the content-assist you had with Java (there is no shortcut to automatically add the right imports or quickfix), but Ruby comes with advantages of its own. Also, with the DLTK you still get basic things like auto-complete on your own objects and the builtin java classes.
+The Eclipse DLTK plugin does a decent job with Ruby. Add it through the marketplace. You'll be giving up some of the content-assist you had with Java (there is no shortcut to automatically add the right imports or quickfix), but Ruby comes with advantages of its own. Also, with the DLTK you still get basic things like auto-complete on your own objects and the builtin java classes.
 
 Since this is for the desktop, the project setup is very easy. Create a project directory like this.
 
@@ -23,7 +23,7 @@ Since this is for the desktop, the project setup is very easy. Create a project 
     /TestGame/libs
     /TestGame/src
 
-Put the main gdx files for your OS in '/libs'. I would also grab gdx-tools.jar out of '/extensions' in the [libGdx archive](http://libgdx.badlogicgames.com/nightlies/) so you can automatically pack your textures. On linux, mine looks like this.
+Put the main gdx files for your OS in '/libs'. I would also grab gdx-tools.jar out of '/extensions' in the libGdx archive so you can automatically pack your textures. On linux, mine looks like this.
 
     /libs/gdx.jar
     /libs/gdx-backend-lwjgl.jar
@@ -47,7 +47,7 @@ TestGame.rb:
 
     LwjglApplication.new(TestGame.new, "Test Game", 800, 600, true)
     
-That's pretty much it. The boolean argument tells libGdx to use OpenGL 2.0. If you don't install 2.0 then you'll have to put false and change the import to GL10. This should display a black window if we add the Initializer.rb script to 'src/util'. This is just a convenience to avoid having imports clutter up all of your scripts. For now, this is all that is needed.
+That's pretty much it. The boolean argument after the screen size tells it to use OpenGL 2.0. This should display a black window if we add the Initializer.rb script to 'src/util'. This is just a convenience to avoid having imports clutter up all of your scripts. For now, this is all that is needed.
 
 Initializer.rb:
 
@@ -59,7 +59,7 @@ Initializer.rb:
     java_import com.badlogic.gdx.Game
     java_import com.badlogic.gdx.graphics.GL20
     
-The project should now run. The first line allows direct access to all of the builtin Java classes. Of course, you will need to have installed [JRuby](https://github.com/jruby/jruby/wiki/GettingStarted). The second line is just a way of loading all of the jars out of the '/libs' folder in one swipe. Iterations in Ruby are done using the .each method of an object. JRuby allows you to call .each on native Java collections as well. If you want an index then Ruby has a nice clean for loop.
+The project should now run. The first line allows direct access to all of the builtin Java classes through JRuby. The second line is a way of requiring all of the jars out of the '/libs' folder in one swipe. Iterations in Ruby are done using the .each method of an object. JRuby allows you to call .each on native Java collections as well. If you want an index then Ruby has a simple for loop.
 
     for i in @min..@max
       #Do things with i while it runs from the value @min up to and including @max
@@ -86,30 +86,29 @@ With TestGame.rb sitting outside alone.
     
 Put the GameScreen.rb script in '/objects'.
 
-GameScreen.rb:
+GameScreen.rb show:
 
-    class GameScreen
-      java_implements Screen
-  
-      def show()
-      
-        #TextureSetup.new
+    ...
+
+    #TextureSetup.new
     
-        @manager = AssetManager.new
-        @manager.setLoader(TiledMap.java_class, TmxMapLoader.new(InternalFileHandleResolver.new))
-        @manager.load("assets/maps/level1.tmx", TiledMap.java_class)
-        @manager.setLoader(TextureAtlas.java_class, TextureAtlasLoader.new(InternalFileHandleResolver.new))
-        @manager.load("assets/gfx/graphics.pack", TextureAtlas.java_class)
-        @manager.finishLoading
-            
-        @atlas = @manager.get("assets/gfx/graphics.pack")
-        @map = @manager.get("assets/maps/level1.tmx")
-        
-        ...
+    @manager = AssetManager.new
+    @manager.setLoader(TiledMap.java_class, TmxMapLoader.new(InternalFileHandleResolver.new))
+    @manager.load("assets/maps/level1.tmx", TiledMap.java_class)
+    @manager.setLoader(TextureAtlas.java_class, TextureAtlasLoader.new(InternalFileHandleResolver.new))
+    @manager.load("assets/gfx/graphics.pack", TextureAtlas.java_class)
+    @manager.finishLoading
+    
+    @atlas = @manager.get("assets/gfx/graphics.pack")
+    @map = @manager.get("assets/maps/level1.tmx")
+    
+    ...
 
 If you change or add any textures to the project you should uncomment the TextureSetup.new line and it will automatically pack all of your textures again, but it is a nuisance having it run every time.
+
+    @manager.load("assets/maps/level1.tmx", TiledMap.java_class)
         
-When you want to refer to the underlying class while using Ruby you will need to use .java_class, because .class will now refer to the Ruby object which Java won't accept. Other than that, notice that *all* of these parenthesis are optional. I use them when a method needs arguments and when defining a method, but both of these can be done away with.
+Notice when you want to refer to the underlying class while using Ruby you will need to use .java_class, because .class will now refer to the Ruby object which the Java method won't understand. Other than that, *all* of these parenthesis are optional. I use them when a method needs arguments and when defining a method, but both of these can be done away with.
 
     def onEvent(type, source)
 
@@ -117,7 +116,7 @@ is equivalent to
 
     def onEvent type, source
     
-In Ruby, they say you should use on_event instead of onEvent, but I don't like all the extra underscores you end up typing and the java methods you'll be using are CamelCase so it just seems smoother to ignore this rule in this case.
+In Ruby, they say you should use on_event instead of onEvent, but I don't like all the extra underscores you end up typing and the java methods you'll be using are CamelCase so it just seems smoother to ignore this rule when working with JRuby.
 
 GameScreen.rb show:
 
@@ -140,9 +139,9 @@ When you need to refer to an object within another namespace you use the :: oper
 
 You can access a java class directly. I used this in the case of the libGdx Array class, because otherwise it will bark at you about trying to redefine the Array that is included from Java.
 
-    frameTiles = Java::ComBadLogicUtils::Array.new
+    frames = Java::ComBadLogicUtils::Array.new
 
-You remove all the periods and use CamelCase to access the class directly without importing. I have no idea why they embraced the Camel here. If you needed to use it numerous times you could just create an alias for it using Ruby to avoid the warning. I find I rarely need to rely on a Java collection though.
+You remove all the periods and use CamelCase to access the class directly without importing. I have no idea why they embraced the Camel here. If you needed to use it numerous times you could just create an alias for it to avoid the warning. I find I rarely need to rely on a Java collection though.
 
 GameScreen.rb:
 
@@ -306,9 +305,9 @@ GameScreen.rb show:
     
     Gdx.input.setInputProcessor(@playerListener)
     
-  end
-  
-Much of this doesn't exist yet, but it lays the foundation for the box2d world and control of the player. Some constants need to be added to C.rb as well. C::PLAYER and C::TILE are hexadecimal constants that are used for collision filtering. And C::GRAVITY is...well, the gravity. Add them now. Notice that the player's position is in world units and not pixels thanks to the box2d conversions.
+    ...
+    
+Notice that the player's position is in world units and not pixels thanks to the box2d conversions. Many of these classes don't exist yet, but it lays the foundation for the box2d world and control of the player. Some constants need to be added to C.rb as well. C::PLAYER and C::TILE are hexadecimal constants that are used for collision filtering. And C::GRAVITY is...well, the gravity. Add all the new constants now from the repository copy of C.rb.
 
 GameScreen.rb update:
 
@@ -335,7 +334,7 @@ GameScreen.rb render:
     
     #@debugRenderer.render(@world, @cam.combined)
     
-The render method needs to be changed slightly. We will now move the rendering into its own methods, and add the call to the box2d debug renderer. Make sure to add the debugRenderer.render call.
+The render method needs to be changed slightly. We will now move the rendering into its own method. Don't forget the call to render the debugRenderer.
 
 GameScreen.rb renderLayers:
 
@@ -356,21 +355,25 @@ GameScreen.rb renderLayers:
       
     end
     
-This method displays a nice Ruby feature.
+This method for rendering the layers displays a nice Ruby feature.
 
     for i in 0...@numLayers
     
-Notice the slight difference. Normally in Java you'd need a (@numLayers - 1), but with Ruby ranges .. means "up to and including" while ... means just "up to". So by adding the third period into the range you avoid tagging on - 1 to a lot of things. For some reason, I feel like it would have made more sense if they were flipped, but it is still a nice feature.
+This range has three periods instead of two. Normally in Java you'd need a (@numLayers - 1), but with Ruby ranges .. means "up to and including" while ... means just "up to". So by adding the third period into the range you avoid tagging on - 1 to a lot of things. For some reason, I feel like it would have made more sense if they were flipped, but it is still a nice feature.
 
     for i in 0..6
-      puts i    #This will print 0, 1, 2, 3, 4, 5, 6
+      puts i    #prints 0, 1, 2, 3, 4, 5, 6
     end
     
     for i in 0...6
-      puts i    #This will print 0, 1, 2, 3, 4, 5
+      puts i    #prints 0, 1, 2, 3, 4, 5
     end
 
-Other than that, the only tricky part may be how the tint is created. Instead of trying to set an individual brightness for each layer I just use an exponential decay function. The function kind of looks like a roller coaster drop and makes a nice natural fall off in brightness. It would look like this for 6 layers.
+Other than that, the only tricky part may be how the tint is calculated. Instead of trying to set an individual brightness for each layer I just use an exponential decay function. The value of this effort increases greatly when you start jumping between many layers and adjusting the brightness of all of them to match. It's a bit overkill for this simple example. Skip this part if you just want to know how to make a simple jumper. It's mostly aesthetic. 
+
+---- MATH ----
+
+The decay function kind of looks like a roller coaster drop and makes a nice natural fall off in brightness. It would look like this for 6 layers.
 
     Layer 6    |
     Layer 5    ||
@@ -380,27 +383,25 @@ Other than that, the only tricky part may be how the tint is created. Instead of
     Layer 1    |||||||||||||||||||
     Layer 0    ||||||||||||||||||||||||||||||||||||
     
-Since the layers are rendered from the bottom up I use (@numLayers - 1 - i) for the argument to the function. This is so that the tint starts dark and becomes brightest when it is at the final, or closest, layer which is rendered last. It contains the - 1 we avoided by using 0...6 instead of 0..6. So on the "graph" it starts at the bottom right and works towards the top left. Really we are going backwards through the function. This is why you need (@numLayers - 1 - i) instead of just i as the argument. You could also just resort layers, but you'll find that you then have to go backwards through them to render them since you draw from back to front. Pick your poison. If you substitute the final index i = @numLayers - 1 into the function you get:
+Since the layers are rendered from the bottom up, I use (@numLayers - 1 - i) for the argument to the function. This is so that the tint starts dark and becomes brightest when it is at the final, or closest, layer. It contains the - 1 we avoided by using 0...6 instead of 0..6. So on the "graph" as we render the layers it starts at the bottom right and works towards the top left increasing in brightness. Really we are going backwards through the function. This is why you need (*@numLayers - 1* - i) instead of just i as the argument. You could also just resort the layers, but you'll find that you then have to go backwards through them to render and do other things with them since you draw to the screen from the back to the front. If you substitute the index of the final layer, i = @numLayers - 1,  into the function you get:
 
-    Math.exp(@numLayers - 1 - (@numLayers - 1))
+    Math.exp(-0.22 * (@numLayers - 1 - (@numLayers - 1)))
 
-That gives you Math.exp(0) or e^0 which is 1. That is the maximum value for the exponential function with coefficent 1. So you end up with the *last* layer rendererd being the brightest. And the first layer rendered being the darkest. As it should be.
+That gives you Math.exp(0) which is 1. That is the maximum value for the exponential function with coefficent 1 and an below or equal to zero. So you end up with the *last* layer rendererd being the brightest. And the first layer rendered being the darkest. As it should be.
 
-Also,
+---- END MATH ----
+
+GameScreen.rb renderLayers:
+
+    ...
 
     if @map.getLayers.get(i).name == "mid"
       @player.render(batch)
     end
     
-makes sure that the player is rendered right after the "mid" layer is rendered and at the same tint. The player is meant to be standing on the "mid" layer. That is the layer that will have solid blocks.
-
-GameScreen.rb setupTileBodies:
-
-The next method is setupTileBodies where the solid tiles are given box2d bodies for collision. I won't go into how to use Tiled map editor, but if you open the map from the repository you'll see that some of the tiles are given a "solid" property. This will be used to build their box2d bodies. Since I'm taking these methods from my game you can see that they are intended to be used for multiple layers with different collision masks, but for now it is just a single layer that gets setup. The method goes through every tile in the layer and checks to see if it has the property of "solid".
-
-    next if tileLayer.getCell(col, row).nil?
-
-This is another inline if statement that will jump to the next iteration if the current cell of the map contains no tile. The rest is basic box2d stuff. The tile object is set as userData. This will be used later. That is it for the new GameScreen script, but we need to add a few classes before anything will run.
+    ...
+    
+This makes sure that the player is rendered right after the "mid" layer is rendered and at the same tint. The player is meant to be standing on the "mid" layer. That is the layer that will have solid blocks.
 
 GameScreen.rb setupTileBodies:
 
@@ -439,7 +440,14 @@ GameScreen.rb setupTileBodies:
     
     end
     
-This is all pretty simple box2d setup. Just notice that the bodies are given a Tile as userData if they have a the "solid" property. This method will iterate through all of the cells in the Tiled map skipping them if they have no Tile or are missing the property. Each solid Tile is then given a box as a body and has its collision filter set. That is it for the new GameScreen script. After we add the player scripts this will be a working platformer.
+
+The next method is setupTileBodies where the solid tiles are given box2d bodies for collision. I won't go into how to use Tiled map editor, but if you open the map from the repository you'll see that some of the tiles are given a "solid" property. This will be used to build their box2d bodies. Since I'm taking these methods from my game you can see that they are intended to be used for multiple layers with different collision masks, but for now it is just a single layer that gets setup. The method goes through every tile in the layer and checks to see if it has the property of "solid".
+
+    next if tileLayer.getCell(col, row).nil?
+
+This is an inline if statement in Ruby that will jump to the next iteration if the current cell of the map contains no tile. The rest is basic box2d stuff. The cell's Tile object is set as userData for the body. This will be used later. That is it for the new GameScreen script, but we need to add a few classes before anything will run.
+
+That is it for the new GameScreen script. After we add the player scripts this will be a working platformer.
     
 Getting A Player Setup
 ----------------------
