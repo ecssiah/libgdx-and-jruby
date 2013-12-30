@@ -48,7 +48,7 @@ class Player
   
   def update(delta)
     
-    linVel = updateMovement(delta)
+    linVel = updateVelocity(delta)
     
     @pos.x = @body.position.x
     @pos.y = @body.position.y
@@ -87,7 +87,7 @@ class Player
   end
   
   
-  def updateMovement(delta)
+  def updateVelocity(delta)
     
     @stateTime += delta
     
