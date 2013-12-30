@@ -3,7 +3,7 @@ LibGdx and Ruby
 Platformer Tutorial
 -------------------
 
-This is a general reference for using Ruby with libGdx. It does not explain libGdx in great detail. It is also a basic working platformer tutorial with some assets that are free to use in any way you want. The full source code is in this repository in the TestGame directory. You should be able to import it directly into Eclipse and run it as a reference for following the tutorial if you're on Linux. If you're on Windows, then swap your gdx files into the /libs folder.
+This is a general reference for using Ruby with libGdx. It does not explain libGdx in great detail. It is also a tutorial for creating a basic working platformer with some assets that are free to use in any way you want. The full source code is in this repository in the TestGame directory. You should be able to import it directly into Eclipse and run it as a reference for following the tutorial if you're on Linux. If you're on Windows, then swap your gdx files into the /libs folder.
 
 What you need:
 * Eclipse
