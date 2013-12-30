@@ -310,8 +310,6 @@ GameScreen.rb show:
   
 Much of this doesn't exist yet, but it lays the foundation for the box2d world and control of the player. Some constants need to be added to C.rb as well. C::PLAYER and C::TILE are hexadecimal constants that are used for collision filtering. And C::GRAVITY is...well, the gravity. Add them now. Notice that the player's position is in world units and not pixels thanks to the box2d conversions.
 
-Make sure to add the debugRenderer.render call.
-
 GameScreen.rb update:
 
     @world.step(C::BOX_STEP, C::BOX_VELOCITY_ITERATIONS, C::BOX_POSITION_ITERATIONS)
@@ -337,7 +335,7 @@ GameScreen.rb render:
     
     #@debugRenderer.render(@world, @cam.combined)
     
-The render method needs to be changed slightly. We will now move the rendering into its own methods, and add the call to the box2d debug renderer.
+The render method needs to be changed slightly. We will now move the rendering into its own methods, and add the call to the box2d debug renderer. Make sure to add the debugRenderer.render call.
 
 GameScreen.rb renderLayers:
 
