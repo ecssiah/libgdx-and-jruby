@@ -15,7 +15,7 @@ What you need:
 Setup
 -----
 
-The Eclipse DLTK plugin does a decent job with Ruby. Add it through the marketplace. You'll be giving up some of the content-assist you had with Java (there is no shortcut to automatically add the right imports or quickfix), but Ruby comes with advantages of its own. Also, with the DLTK you still get basic things like auto-complete on your own objects and the builtin java classes.
+The Eclipse DLTK plugin does a decent job with Ruby. Add it through the marketplace. You'll be giving up some of the content-assist you had with Java (there is no shortcut to automatically add the right imports or quickfix), but Ruby comes with advantages of its own. Also, with the DLTK you still get basic things like auto-complete on your own objects.
 
 Since this is for the desktop, the project setup is very easy. Create a project directory like this.
 
