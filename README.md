@@ -544,7 +544,7 @@ Player.rb update:
     
 Notice how neither :left or :right were ever declared before this in the class. It doesn't matter to Ruby. @contacts is the number of objects the player's foot sensor is touching. If the player is facing left or right and their feet are not contacting the ground then the player is assumeed to be jumping by checking if @contacts == 0. If you aren't touching the ground then you're jumping. How @contacts is determined will come a little later.
 
-Player.rb updateMovement:
+Player.rb updateVelocity:
 
     ...
     
