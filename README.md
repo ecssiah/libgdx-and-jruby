@@ -433,6 +433,8 @@ GameScreen.rb setupTileBodies:
     
     end
     
+This is all pretty simple box2d setup. Just notice that the bodies are given a Tile as userData if they have a the "solid" property. This method will iterate through all of the cells in the Tiled map skipping them if they have no Tile or are missing the property. Each solid Tile is then given a box as a body and has its collision filter set. That is it for the new GameScreen script. After we add the player scripts this will be a working platformer.
+    
 Getting A Player Setup
 ----------------------
 
