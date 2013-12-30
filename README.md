@@ -23,7 +23,7 @@ Since this is for the desktop, the project setup is very easy. Create a project 
     /TestGame/libs
     /TestGame/src
 
-Put the main gdx files for your OS in the '/libs' folder. I would also grab gdx-tools.jar out of '/extensions' in the [libGdx archive](http://libgdx.badlogicgames.com/nightlies/) so you can automatically pack your textures. On linux, mine looks like this.
+Put the main gdx files for your OS in '/libs'. I would also grab gdx-tools.jar out of '/extensions' in the [libGdx archive](http://libgdx.badlogicgames.com/nightlies/) so you can automatically pack your textures. On linux, mine looks like this.
 
     /libs/gdx.jar
     /libs/gdx-backend-lwjgl.jar
@@ -62,7 +62,7 @@ Initializer.rb:
 The project should now run. The first line allows direct access to all of the builtin Java classes. Of course, you will need to have installed [JRuby](https://github.com/jruby/jruby/wiki/GettingStarted). The second line is just a way of loading all of the jars out of the '/libs' folder in one swipe. Iterations in Ruby are done using the .each method of an object. JRuby allows you to call .each on native Java collections as well. If you want an index then Ruby has a nice clean for loop.
 
     for i in @min..@max
-      #Do things with i while it runs from the value @min up to @max
+      #Do things with i while it runs from the value @min up to and including @max
     end
 
 Adding A Camera and Tiled Map
@@ -105,7 +105,11 @@ GameScreen.rb:
         @atlas = @manager.get("assets/gfx/graphics.pack")
         @map = @manager.get("assets/maps/level1.tmx")
         
-When you want to refer to the underlying class while using JRuby you will need to use .java_class, because .class will now refer to the Ruby object which Java won't accept. Other than that, notice that *all* of these parenthesis are optional. I use them when a method needs arguments and when defining a method, but both of these can be done away with.
+        ...
+
+If you change or add any textures to the project you should uncomment the TextureSetup.new line and it will automatically pack all of your textures again, but it is a nuisance having it run every time.
+        
+When you want to refer to the underlying class while using Ruby you will need to use .java_class, because .class will now refer to the Ruby object which Java won't accept. Other than that, notice that *all* of these parenthesis are optional. I use them when a method needs arguments and when defining a method, but both of these can be done away with.
 
     def onEvent(type, source)
 
@@ -116,6 +120,8 @@ is equivalent to
 In Ruby, they say you should use on_event instead of onEvent, but I don't like all the extra underscores you end up typing and the java methods you'll be using are CamelCase so it just seems smoother to ignore this rule in this case.
 
 GameScreen.rb show:
+
+        ...
 
         @cam = OrthographicCamera.new(Gdx.graphics.getWidth * C::WTB, Gdx.graphics.getHeight * C::WTB)
         @cam.setToOrtho(false, 40, 30)
