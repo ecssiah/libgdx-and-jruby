@@ -452,7 +452,7 @@ That is it for the new GameScreen script. After we add the player scripts this w
 Getting A Player Setup
 ----------------------
 
-There are three scripts involved in getting the player up and running. Player.rb, PlayerListener.rb, and PlayerContactListener.rb. I won't cover every detail, but I'll try and get the key ideas. Rely on the full source to make sure you have everything.
+There are three scripts involved in getting the player up and running. Player.rb, PlayerListener.rb, and PlayerContactListener.rb. I won't cover every detail, but I'll try and get the key ideas. Rely on the source in the repository to make sure you have everything.
 
 Player.rb:
 
@@ -466,13 +466,13 @@ Player.rb:
 
 Here you can see how to setup getters, setters, and constants for a class in Ruby. @pos will now be available as an instance variable defaulted to nil and can be accessed and read like this.
 
-    @cam.position.x = @player.pos.x
-    @player.pos = Vector2.new(0, 0)
+    GET_OBJECT = @player.pos
+    @player.pos = SET_OBJECT
     
 These can also be overriden if you need to put extra logic into them.
 
     def pos(pos)
-        @pos = pos
+      @pos = pos
     end
     
 To access this one treat it as a method.
@@ -482,19 +482,18 @@ To access this one treat it as a method.
 I often prefer overriding = though.
 
     def pos=(pos)
-    
-        #Do things related to setting @pos
-        @pos = pos
-    
+      @pos = pos
     end
     
 This can be accessed in the exact same way as the default setter.
 
     @player.pos = Vector2.new
 
-Or within the same class.
+But remember that if you add extra logic and you need to have it run from the class it was declared in you'll have to use the self reference. That confused me for a while. It doesn't come up much.
 
     self.pos = Vector2.new
+
+-----
 
 There are a couple things to say about how the animations are setup.
 
@@ -507,7 +506,7 @@ Player.rb initialize:
 
     ...
     
-This is to convert the raw pixel sizes into the box2d scale. C::WTB is the "World To Box" factor again.
+This is to convert the raw pixel sizes into the box2d scale when getting the size from the atlas. C::WTB is the "World To Box" factor again.
 
 Player.rb initialize:
 
@@ -523,7 +522,7 @@ Player.rb initialize:
     
     ...
     
-This is the example of accessing a Java class directly I was referring to before. Since Animation takes a libGdx Array it was easier to start with one instead of trying to convert it from a Ruby array. You can also see how Ruby lets you embed a variable into a string. This would also work.
+This is the example of accessing a Java class directly I was referring to before. Since Animation takes a libGdx Array it was easier to start with one instead of trying to convert it from a Ruby array. By easier, I mean I tried for a long time to do it the other way and then gave up and just looked up how to access the class directly. It was worth knowing anyway. You can also see how Ruby lets you embed a variable into a string. This would also work.
 
     frames.add(@atlas.findRegion("security1/walkLeft" + i.to_s))
     
@@ -543,7 +542,7 @@ Player.rb update:
       
       ...
     
-Notice how neither :left or :right were ever declared before this in the class. It doesn't matter to Ruby. @contacts is the number of objects the player's foot sensor is touching. If the player is facing left or right and their feet are not contacting the ground then the frame is set for the correct jump animation by checking if @contacts == 0. How @contacts is determined will come a little later.
+Notice how neither :left or :right were ever declared before this in the class. It doesn't matter to Ruby. @contacts is the number of objects the player's foot sensor is touching. If the player is facing left or right and their feet are not contacting the ground then the player is assumeed to be jumping by checking if @contacts == 0. If you aren't touching the ground then you're jumping. How @contacts is determined will come a little later.
 
 Player.rb updateMovement:
 
@@ -563,11 +562,11 @@ Player.rb draw:
 
     batch.draw(@frame, @pos.x - @width / 2, @pos.y - @height / 2, @width, @height)
 
-The setupBody method may seem complicated, but it is just a lot of the same thing over and over. This is where the capsule-like box2d body is setup for the player. It can easily be changed to setup a body for any entity in the game. As a matter of fact, I created the method by swapping a couple things in my setupEntity class for my game. I don't think there is much more that needs to be explained in Player.rb with regards to working with Ruby. There are plenty of libgdx references if a particular method doesn't make sense. The one thing to notice is that the foot sensor is given the number 0 as userData. This will be used to check if it is the player's foot hitting the ground instead of their torso or head.
+The setupBody method may seem complicated, but it is just a lot of the same thing over and over. This is where the capsule-like box2d body is setup for the player. It can easily be changed to setup a body for any entity in the game. As a matter of fact, I created the method by swapping a couple things in my setupEntity class for my game. I don't think there is much more that needs to be explained in Player.rb with regards to working with Ruby. There are plenty of libgdx references if a particular method doesn't make sense. The one thing to notice is that the foot sensor is given the number 0 as userData. This will be used to check if it is the player's foot hitting the ground instead of their torso or head. You don't want to be considered standing on the ground if only your head is touching the ground.
 
      @body.createFixture(sensorFixture).setUserData(0)
 
-Finally, take a look at the slightly simpler "switch" statement that is in the keyDown method. In Ruby it is called "case". The number of contacts is used here again to make sure the player can't move or jump in the air.
+Finally, take a look at the slightly more simple "switch" statement that is in the keyDown method. In Ruby it is called "case". The number of contacts is used here again to make sure the player can't move or jump in the air.
 
 Player.rb keyDown:
 
@@ -599,8 +598,14 @@ PlayerContactListener.rb beginContact:
      
     ...
      
-Notice Ruby's instanceOf method. This is the general format for testing methods in Ruby. The same method is used to determine if it has contacted a StaticTiledMapTile. We also use the userData we set earlier to make sure we have the foot sensor instead other parts of the player. If that is all true then the number of contacts is increased or decreased when the contact ends.
+Notice Ruby's instanceOf method. This is the general format for testing methods in Ruby - with the ? at the end like that. .kind_of? also works. The same method is used to determine if it has contacted a StaticTiledMapTile. Ruby also has all the string tests built in like:
 
-If you run the completed program with the debugRenderer uncommented you should have a basic working platformer and a player that can climb stairs and jump around on the map. Request any clarifications or additions at 08kabbotta80@gmail.com.
+    string.start_with?("prefix")
+    string.end_with?("suffix")
+    string.include?("this string")
+
+We also use the userData we set earlier to make sure we have the foot sensor instead of another part of the player's body. If that is all true then the number of contacts is increased, or decreased when the contact ends. Ruby does not include the ++ or -- operator.
+
+If you run the completed program with the debugRenderer uncommented in GameScreen.rb you should have a basic working platformer and a player that can climb stairs and jump around on the map. Request any clarifications or additions at 08kabbotta80@gmail.com.
 
 
