@@ -1,16 +1,16 @@
-LibGdx and Ruby 
+LibGDX and Ruby 
 ===============
 Platformer Tutorial
 -------------------
 
-This is a general reference for using Ruby with libGdx. It does not explain libGdx in great detail, but it is fairly thorough. It is also a tutorial for creating a basic working platformer. It includes some assets that are free to use in any way you want. The full project is in this repository in the TestGame directory. If you're on Linux, you should be able to import it directly into Eclipse and run it as a reference for following the tutorial. If you're on Windows, then swap your jars into '/libs'.
+This is a general reference for using Ruby with libgdx. It does not explain libgdx in great detail, but it is fairly thorough. It is also a tutorial for creating a basic working platformer. It includes some assets that are free to use in any way you want. The full project is in this repository in the TestGame directory. If you're on Linux, you should be able to import it directly into Eclipse and run it as a reference for following the tutorial. If you're on Windows, then swap your jars into '/libs'.
 
 What you need:
 * Eclipse
 * [DLTK plugin](http://www.eclipse.org/dltk/)
 * [JRuby](https://github.com/jruby/jruby/wiki/GettingStarted)
 * Assets from this repository
-* [libGdx](http://libgdx.badlogicgames.com/nightlies/), and a decent understanding of it
+* [libgdx](http://libgdx.badlogicgames.com/nightlies/), and a decent understanding of it
 
 Setup
 -----
@@ -23,7 +23,7 @@ Since this is for the desktop, the project setup is very easy. Create a project 
     /TestGame/libs
     /TestGame/src
 
-Put the main gdx files for your OS in '/libs'. I would also grab gdx-tools.jar out of '/extensions' in the libGdx archive so you can automatically pack your textures. On linux, mine looks like this.
+Put the main gdx files for your OS in '/libs'. I would also grab gdx-tools.jar out of '/extensions' in the libgdx archive so you can automatically pack your textures. On linux, mine looks like this.
 
     /libs/gdx.jar
     /libs/gdx-backend-lwjgl.jar
@@ -137,7 +137,7 @@ When you need to refer to an object within another namespace you use the :: oper
 
     java_import com.badlogic.gdx.Input::Keys
 
-You can access a java class directly. I used this in the case of the libGdx Array class, because otherwise it will bark at you about trying to redefine the Array that is included from Java.
+You can access a java class directly. I used this in the case of the libgdx Array class, because otherwise it will bark at you about trying to redefine the Array that is included from Java.
 
     frames = Java::ComBadLogicUtils::Array.new
 
@@ -254,7 +254,7 @@ TextureSetup.rb:
 
 The initialize method is similar to the Java constructor. It is a private hidden method that is called through the .new method of a Ruby class. Both .new and initialize() can be overriden separately so it is not identical to a Java constructor, but they get the same job done.
 
-You should now have a simple rendered map and associated camera with libGdx and JRuby.
+You should now have a simple rendered map and associated camera with libgdx and JRuby.
 
 Collision With The Tile Map
 ---------------------------
@@ -522,7 +522,7 @@ Player.rb initialize:
     
     ...
     
-This is the example of accessing a Java class directly I was referring to before. Since Animation takes a libGdx Array it was easier to start with one instead of trying to convert it from a Ruby array. By easier, I mean I tried for a long time to do it the other way and then gave up and just looked up how to access the class directly. It was worth knowing anyway. You can also see how Ruby lets you embed a variable into a string. This would also work.
+This is the example of accessing a Java class directly I was referring to before. Since Animation takes a libgdx Array it was easier to start with one instead of trying to convert it from a Ruby array. By easier, I mean I tried for a long time to do it the other way and then gave up and just looked up how to access the class directly. It was worth knowing anyway. You can also see how Ruby lets you embed a variable into a string. This would also work.
 
     frames.add(@atlas.findRegion("security1/walkLeft" + i.to_s))
     
