@@ -253,7 +253,7 @@ TextureSetup.rb:
       
     end
 
-The initialize method is similar to the Java constructor. It is a private hidden method that is called through the .new method of a Ruby class. Both .new and initialize() can be overriden separately so it is not identical to a Java constructor, but gets the same job done.
+The initialize method is similar to the Java constructor. It is a private hidden method that is called through the .new method of a Ruby class. Both .new and initialize() can be overriden separately so it is not identical to a Java constructor, but they get the same job done.
 
 You should now have a simple rendered map and associated camera with libGdx and JRuby.
 
