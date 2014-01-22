@@ -141,7 +141,11 @@ You can access a java class directly. I used this in the case of the libgdx Arra
 
     frames = Java::ComBadLogicUtils::Array.new
 
-You remove all the periods and use CamelCase to access the class directly without importing. I have no idea why they embraced the Camel here. If you needed to use it numerous times you could just create an alias for it to avoid the warning. I find I rarely need to rely on a Java collection though.
+You remove all the periods and use CamelCase to access the class directly without importing. You can also use the import notation.
+
+    frames = com.badlogic.utils.Array.new
+
+If you needed to use it numerous times you could just create an alias for it to avoid the warning. I find I rarely need to rely on a Java collection though.
 
 GameScreen.rb:
 
