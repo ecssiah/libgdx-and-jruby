@@ -9,8 +9,8 @@ What you need:
 * Eclipse
 * [DLTK plugin](http://www.eclipse.org/dltk/)
 * [JRuby](https://github.com/jruby/jruby/wiki/GettingStarted)
-* Assets from this repository
 * [libgdx](http://libgdx.badlogicgames.com/nightlies/), and a decent understanding of it
+* Assets from this repository
 
 Setup
 -----
